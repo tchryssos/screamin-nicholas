@@ -6,7 +6,7 @@
     "node": true,
     "es6": true
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
   "parserOptions": {
     "ecmaVersion": 2021
   },
@@ -33,7 +33,6 @@
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
-    "import/no-anonymous-default-export": "error",
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn",
 
