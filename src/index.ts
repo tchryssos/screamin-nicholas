@@ -1,7 +1,8 @@
 import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
-import { playYoutube } from './playYoutube.js';
+import { playYoutube, stopYoutube } from './audio.js';
+import { PLAY, STOP } from './constants/commands.js';
 
 dotenv.config();
 
@@ -27,11 +28,11 @@ client.on('interactionCreate', async (interaction) => {
   const { commandName } = interaction;
 
   switch (commandName) {
-    case 'ping':
-      interaction.reply('pong');
-      break;
-    case 'play':
+    case PLAY:
       playYoutube(client, interaction);
+      break;
+    case STOP:
+      stopYoutube(interaction);
       break;
   }
 });

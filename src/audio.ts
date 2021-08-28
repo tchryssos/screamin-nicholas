@@ -8,6 +8,8 @@ import {
 import { Client, CommandInteraction } from 'discord.js';
 import ytdl from 'ytdl-core';
 
+import { currentQueueRef } from './state/queue.js';
+
 // This function is adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
 export const playYoutube = async (
   client: InstanceType<typeof Client>,
@@ -27,18 +29,29 @@ export const playYoutube = async (
     });
 
     try {
-      const videoMeta = await ytdl.getBasicInfo(youtubeUrl);
-      const stream = ytdl(youtubeUrl, { filter: 'audioonly' });
+      const {
+        videoDetails: { title, author, lengthSeconds },
+      } = await ytdl.getBasicInfo(youtubeUrl);
+      const stream = ytdl(youtubeUrl, { filter: 'audioonly', dlChunkSize: 0 });
+      currentQueueRef.current = {
+        stream,
+        meta: {
+          title,
+          author: author.name,
+          lengthSeconds,
+        },
+      };
 
       const resource = createAudioResource(stream, {
         inputType: StreamType.Arbitrary,
       });
       const player = createAudioPlayer();
+      currentQueueRef.player = player;
 
       player.play(resource);
       connection.subscribe(player);
 
-      interaction.reply(`Now playing: ${videoMeta.videoDetails.title}`);
+      interaction.reply(`Now playing: ${title}`);
 
       player.on(AudioPlayerStatus.Idle, () => connection.destroy());
     } catch (e) {
@@ -47,5 +60,14 @@ export const playYoutube = async (
     }
   } else {
     interaction.reply('Please provide a URL');
+  }
+};
+
+export const stopYoutube = (interaction: CommandInteraction) => {
+  const { player } = currentQueueRef;
+  if (player) {
+    player.pause();
+    interaction.reply('Stopping');
+    currentQueueRef.current = null;
   }
 };

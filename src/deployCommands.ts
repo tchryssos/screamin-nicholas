@@ -3,20 +3,22 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import dotenv from 'dotenv';
 
+import { PLAY, STOP } from './constants/commands.js';
+
 dotenv.config();
 
 const { TOKEN: token, GUILD_ID: guildId, CLIENT_ID: clientId } = process.env;
 
 const commands = [
   new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('Replies with pong!'),
-  new SlashCommandBuilder()
-    .setName('play')
-    .setDescription('Play youtube audio in your voice channel')
+    .setName(PLAY)
+    .setDescription('Play specified audio in your voice channel')
     .addStringOption((option) =>
       option.setName('url').setDescription('the url you want to play')
     ),
+  new SlashCommandBuilder()
+    .setName(STOP)
+    .setDescription('Stop the currently playing audio'),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);
