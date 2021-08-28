@@ -21,7 +21,7 @@ client.on('interactionCreate', async (interaction) => {
             interaction.reply('pong');
             break;
         case 'play':
-            playYoutube(client, interaction.options.getString('url'));
+            playYoutube(client, interaction);
             break;
     }
 });

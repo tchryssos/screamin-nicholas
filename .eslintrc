@@ -14,7 +14,7 @@
     // eslint
     "max-len": "off",
     "one-var": "off",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "no-multiple-empty-lines": ["error", { "max": 2 }],
     "no-prototype-builtins": "off",
     "class-methods-use-this": "warn",
