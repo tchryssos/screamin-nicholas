@@ -3,7 +3,7 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import dotenv from 'dotenv';
 
-import { PLAY, QUEUE, STOP } from '../../constants/commands.js';
+import { PLAY, QUEUE, STOP, VIEW_QUEUE } from '../../constants/commands.js';
 
 dotenv.config();
 
@@ -25,6 +25,9 @@ const commands = [
     .addStringOption((option) =>
       option.setName('url').setDescription('the url you want to queue')
     ),
+  new SlashCommandBuilder()
+    .setName(VIEW_QUEUE)
+    .setDescription('View the current track queue'),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);

@@ -27,13 +27,17 @@ export const queuePlayer = async (interaction: CommandInteraction) => {
 
   try {
     const meta = await fetchMeta(youtubeUrl);
-    if (!currentQueueRef.queue.length) {
+    if (!currentQueueRef.current) {
       const stream = await fetchStream(youtubeUrl);
+      currentQueueRef.current = {
+        meta,
+        stream,
+      };
       playAudio(interaction, stream, voiceChannel.id, guild);
     } else {
       currentQueueRef.queue.push(meta);
       interaction.reply(
-        `Added ${meta.title} to the queue. It's track #${currentQueueRef.queue.length}.`
+        `Added ${meta.title} to the queue. It's #${currentQueueRef.queue.length} in the queue.`
       );
     }
   } catch (e) {

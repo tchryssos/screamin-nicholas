@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 import { queuePlayer } from './commands/queuePlayer.js';
 import { startPlayer } from './commands/startPlayer.js';
 import { stopPlayer } from './commands/stopPlayer.js';
-import { PLAY, QUEUE, STOP } from './constants/commands.js';
+import { viewQueue } from './commands/viewQueue.js';
+import { PLAY, QUEUE, STOP, VIEW_QUEUE } from './constants/commands.js';
 
 dotenv.config();
 
@@ -36,6 +37,9 @@ client.on('interactionCreate', async (interaction) => {
       break;
     case QUEUE:
       queuePlayer(interaction);
+      break;
+    case VIEW_QUEUE:
+      viewQueue(interaction);
       break;
   }
 });
