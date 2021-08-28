@@ -5,9 +5,18 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
-client.login(process.env.TOKEN);
-client.on('messageCreate', (msg) => {
-    if (msg.content === 'ping') {
-        msg.channel.send('pong');
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand())
+        return;
+    const { commandName } = interaction;
+    if (commandName === 'ping') {
+        await interaction.reply('Pong!');
+    }
+    else if (commandName === 'server') {
+        await interaction.reply('Server info.');
+    }
+    else if (commandName === 'user') {
+        await interaction.reply('User info.');
     }
 });
+client.login(process.env.TOKEN);
