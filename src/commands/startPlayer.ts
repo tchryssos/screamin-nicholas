@@ -1,14 +1,8 @@
-import {
-  AudioPlayerStatus,
-  createAudioPlayer,
-  createAudioResource,
-  joinVoiceChannel,
-  StreamType,
-} from '@discordjs/voice';
 import { CommandInteraction } from 'discord.js';
 
 import { currentQueueRef } from '../state/queue.js';
 import { fetchMeta, fetchStream } from './fetchYoutube.js';
+import { playAudio } from './playAudio.js';
 
 // This function is adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
 export const startPlayer = async (interaction: CommandInteraction) => {
@@ -42,35 +36,7 @@ export const startPlayer = async (interaction: CommandInteraction) => {
       meta,
     };
 
-    // Create or use the audio player
-    let player = currentQueueRef.player;
-    if (!player) {
-      player = createAudioPlayer();
-      currentQueueRef.player = player;
-    }
-
-    const resource = createAudioResource(stream, {
-      inputType: StreamType.Arbitrary,
-    });
-
-    // Join voice channel
-    const connection = joinVoiceChannel({
-      channelId: voiceChannel.id,
-      guildId: guild.id,
-      adapterCreator: guild!.voiceAdapterCreator,
-    });
-
-    // Play the audio, and related things
-    player.play(resource);
-    connection.subscribe(player);
-
-    interaction.reply(`Now playing: ${currentQueueRef.current?.meta.title}`);
-
-    player.on(AudioPlayerStatus.Idle, () => {
-      connection.destroy();
-      currentQueueRef.player = null;
-      currentQueueRef.current = null;
-    });
+    playAudio(interaction, stream, voiceChannel.id, guild);
   } catch (e) {
     const { message } = e as Error;
     interaction.reply(message);

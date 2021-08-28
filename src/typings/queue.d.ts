@@ -1,4 +1,4 @@
-import { AudioPlayer } from '@discordjs/voice';
+import { AudioPlayer, VoiceConnection } from '@discordjs/voice';
 import ytdl from 'ytdl-core';
 
 export type YTDLStream = ReturnType<typeof ytdl>;
@@ -16,4 +16,5 @@ export type CurrentQueueRef = {
     meta: VideoMeta;
   } | null;
   player: AudioPlayer | null;
+  queue: VideoMeta[];
 };
