@@ -6,12 +6,12 @@ import {
   StreamType,
 } from '@discordjs/voice';
 import { CommandInteraction } from 'discord.js';
-import ytdl from 'ytdl-core';
 
 import { currentQueueRef } from '../state/queue.js';
+import { fetchYoutube } from './fetchYoutube.js';
 
 // This function is adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
-export const playYoutube = async (interaction: CommandInteraction) => {
+export const startPlayer = async (interaction: CommandInteraction) => {
   // Run a bunch of checks to make sure that the command can be run successfully
   const { options, guildId, client } = interaction;
   if (!guildId) {
@@ -35,18 +35,7 @@ export const playYoutube = async (interaction: CommandInteraction) => {
 
   try {
     // Get the video meta data and stream
-    const {
-      videoDetails: { title, author, lengthSeconds },
-    } = await ytdl.getBasicInfo(youtubeUrl);
-    const stream = ytdl(youtubeUrl, { filter: 'audioonly', dlChunkSize: 0 });
-    currentQueueRef.current = {
-      stream,
-      meta: {
-        title,
-        author: author.name,
-        lengthSeconds,
-      },
-    };
+    const stream = await fetchYoutube(youtubeUrl);
 
     // Create or use the audio player
     let player = currentQueueRef.player;
@@ -69,7 +58,7 @@ export const playYoutube = async (interaction: CommandInteraction) => {
     player.play(resource);
     connection.subscribe(player);
 
-    interaction.reply(`Now playing: ${title}`);
+    interaction.reply(`Now playing: ${currentQueueRef.current?.meta.title}`);
 
     player.on(AudioPlayerStatus.Idle, () => {
       connection.destroy();
