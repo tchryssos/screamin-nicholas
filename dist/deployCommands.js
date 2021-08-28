@@ -5,15 +5,22 @@ import dotenv from 'dotenv';
 dotenv.config();
 const { TOKEN: token, GUILD_ID: guildId, CLIENT_ID: clientId } = process.env;
 const commands = [
-    new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
-    new SlashCommandBuilder().setName('server').setDescription('Replies with server info!'),
-    new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
-]
-    .map(command => command.toJSON());
+    new SlashCommandBuilder()
+        .setName('ping')
+        .setDescription('Replies with pong!'),
+    new SlashCommandBuilder()
+        .setName('server')
+        .setDescription('Replies with server info!'),
+    new SlashCommandBuilder()
+        .setName('user')
+        .setDescription('Replies with user info!'),
+].map((command) => command.toJSON());
 const rest = new REST({ version: '9' }).setToken(token);
 (async () => {
     try {
-        await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+        await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+            body: commands,
+        });
         console.log('Successfully registered application commands.');
     }
     catch (error) {
