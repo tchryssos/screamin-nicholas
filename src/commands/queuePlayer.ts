@@ -1,7 +1,7 @@
 import { CommandInteraction } from 'discord.js';
 import { currentQueueRef } from 'src/state/queue';
 
-import { fetchMeta } from './fetchYoutube.js';
+import { fetchMeta } from './utils/fetchYoutube.js';
 
 export const queuePlayer = async (interaction: CommandInteraction) => {
   // Run a bunch of checks to make sure that the command can be run successfully...

@@ -1,8 +1,8 @@
 import { CommandInteraction } from 'discord.js';
 
 import { currentQueueRef } from '../state/queue.js';
-import { fetchMeta, fetchStream } from './fetchYoutube.js';
-import { playAudio } from './playAudio.js';
+import { fetchMeta, fetchStream } from './utils/fetchYoutube.js';
+import { playAudio } from './utils/playAudio.js';
 
 // This function is adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
 export const startPlayer = async (interaction: CommandInteraction) => {
