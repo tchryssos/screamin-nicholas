@@ -1,12 +1,12 @@
 import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
-import { playYoutube, stopYoutube } from './audio.js';
+import { playYoutube } from './commands/playYoutube.js';
+import { stopPlayer } from './commands/stopPlayer.js';
 import { PLAY, STOP } from './constants/commands.js';
 
 dotenv.config();
 
-// START - SETUP - START
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
@@ -19,9 +19,7 @@ const client = new Client({
 client.once('ready', () => {
   console.log(`Logged in as ${client.user!.tag}!`);
 });
-// END - SETUP - END
 
-// START - COMMANDS - START
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isCommand()) return;
 
@@ -32,11 +30,10 @@ client.on('interactionCreate', async (interaction) => {
       playYoutube(client, interaction);
       break;
     case STOP:
-      stopYoutube(interaction);
+      stopPlayer(interaction);
       break;
   }
 });
-// END - COMMANDS - END
 
 // Login to Discord with your client's token
 client.login(process.env.TOKEN);

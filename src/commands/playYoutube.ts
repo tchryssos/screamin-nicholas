@@ -8,7 +8,7 @@ import {
 import { Client, CommandInteraction } from 'discord.js';
 import ytdl from 'ytdl-core';
 
-import { currentQueueRef } from './state/queue.js';
+import { currentQueueRef } from '~/state/queue.js';
 
 // This function is adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
 export const playYoutube = async (
@@ -60,14 +60,5 @@ export const playYoutube = async (
     }
   } else {
     interaction.reply('Please provide a URL');
-  }
-};
-
-export const stopYoutube = (interaction: CommandInteraction) => {
-  const { player } = currentQueueRef;
-  if (player) {
-    player.pause();
-    interaction.reply('Stopping');
-    currentQueueRef.current = null;
   }
 };

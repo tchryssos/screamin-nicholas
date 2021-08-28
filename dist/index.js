@@ -1,6 +1,6 @@
 import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
-import { playYoutube, stopYoutube } from './audio.js';
+import { playYoutube, stopYoutube } from './commands/audio.js';
 import { PLAY, STOP } from './constants/commands.js';
 dotenv.config();
 const client = new Client({

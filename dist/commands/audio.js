@@ -1,6 +1,6 @@
 import { AudioPlayerStatus, createAudioPlayer, createAudioResource, joinVoiceChannel, StreamType, } from '@discordjs/voice';
 import ytdl from 'ytdl-core';
-import { currentQueueRef } from './state/queue.js';
+import { currentQueueRef } from '../state/queue.js';
 export const playYoutube = async (client, interaction) => {
     const youtubeUrl = interaction.options.getString('url');
     if (youtubeUrl) {

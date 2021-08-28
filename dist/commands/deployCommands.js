@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import dotenv from 'dotenv';
-import { PLAY, STOP } from './constants/commands.js';
+import { PLAY, STOP } from '../constants/commands.js';
 dotenv.config();
 const { TOKEN: token, GUILD_ID: guildId, CLIENT_ID: clientId } = process.env;
 const commands = [
