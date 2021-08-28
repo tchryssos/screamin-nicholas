@@ -18,8 +18,8 @@ export const viewQueue = (interaction: CommandInteraction) => {
 
   const trackList = currentQueueRef.queue
     .slice(0, queueDisplayLimit)
-    .reduce((listString, currentMeta) => {
-      return `${listString}\n${currentMeta.title}`;
+    .reduce((listString, currentMeta, i) => {
+      return `${listString}\n#${i + 1}: ${currentMeta.title}`;
     }, '');
 
   interaction.reply(
