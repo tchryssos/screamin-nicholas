@@ -8,6 +8,7 @@ import {
 import { Client, CommandInteraction } from 'discord.js';
 import ytdl from 'ytdl-core';
 
+// This function is adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
 export const playYoutube = async (
   client: InstanceType<typeof Client>,
   interaction: CommandInteraction
@@ -42,15 +43,7 @@ export const playYoutube = async (
       player.on(AudioPlayerStatus.Idle, () => connection.destroy());
     } catch (e) {
       const { message } = e as Error;
-      if (message.includes('No video id found')) {
-        interaction.reply('Please submit a valid URL');
-      } else if (message.includes('does not match expected format')) {
-        interaction.reply(
-          'Something is wrong with your URL. Check the video ID and try again.'
-        );
-      } else {
-        interaction.reply('Something went wrong. Please try again.');
-      }
+      interaction.reply(message);
     }
   } else {
     interaction.reply('Please provide a URL');

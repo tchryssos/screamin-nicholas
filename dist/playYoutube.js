@@ -24,15 +24,7 @@ export const playYoutube = async (client, interaction) => {
         }
         catch (e) {
             const { message } = e;
-            if (message.includes('No video id found')) {
-                interaction.reply('Please submit a valid URL');
-            }
-            else if (message.includes('does not match expected format')) {
-                interaction.reply('Something is wrong with your URL. Check the video ID and try again.');
-            }
-            else {
-                interaction.reply('Something went wrong. Please try again.');
-            }
+            interaction.reply(message);
         }
     }
     else {
