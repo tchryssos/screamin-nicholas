@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
-import { currentQueueRef } from 'src/state/queue';
 
+import { currentQueueRef } from '../state/queue.js';
 import { fetchMeta, fetchStream } from './utils/fetchYoutube.js';
 import { playAudio } from './utils/playAudio.js';
 

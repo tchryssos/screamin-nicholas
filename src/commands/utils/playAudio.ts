@@ -6,8 +6,10 @@ import {
   StreamType,
 } from '@discordjs/voice';
 import { CommandInteraction, Guild } from 'discord.js';
-import { currentQueueRef } from 'src/state/queue';
-import { YTDLStream } from 'src/typings/queue';
+
+import { currentQueueRef } from '../../state/queue.js';
+// eslint-disable-next-line import/extensions
+import { YTDLStream } from '../../typings/queue';
 
 export const playAudio = (
   interaction: CommandInteraction,
