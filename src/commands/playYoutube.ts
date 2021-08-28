@@ -19,7 +19,7 @@ export const playYoutube = async (interaction: CommandInteraction) => {
   }
 
   const guild = client.guilds.cache.get(guildId)!;
-  const member = guild!.members.cache.get(interaction.member!.user.id);
+  const member = guild.members.cache.get(interaction.member!.user.id);
 
   const voiceChannel = member!.voice.channel;
   if (!voiceChannel) {
@@ -71,7 +71,10 @@ export const playYoutube = async (interaction: CommandInteraction) => {
 
     interaction.reply(`Now playing: ${title}`);
 
-    player.on(AudioPlayerStatus.Idle, () => connection.destroy());
+    player.on(AudioPlayerStatus.Idle, () => {
+      connection.destroy();
+      currentQueueRef.player = null;
+    });
   } catch (e) {
     const { message } = e as Error;
     interaction.reply(message);
