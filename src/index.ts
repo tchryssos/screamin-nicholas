@@ -17,6 +17,7 @@ const client = new Client({
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
+  // eslint-disable-next-line no-console
   console.log(`Logged in as ${client.user!.tag}!`);
 });
 
@@ -27,7 +28,7 @@ client.on('interactionCreate', async (interaction) => {
 
   switch (commandName) {
     case PLAY:
-      playYoutube(client, interaction);
+      playYoutube(interaction);
       break;
     case STOP:
       stopPlayer(interaction);

@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 
-import { currentQueueRef } from '~/state/queue.js';
+import { currentQueueRef } from '../state/queue.js';
 
 export const stopPlayer = (interaction: CommandInteraction) => {
   const { player } = currentQueueRef;
