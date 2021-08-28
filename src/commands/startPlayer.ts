@@ -4,7 +4,7 @@ import { currentQueueRef } from '../state/queue.js';
 import { fetchMeta, fetchStream } from './utils/fetchYoutube.js';
 import { playAudio } from './utils/playAudio.js';
 
-// This function is adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
+// This function (and its utils) adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
 export const startPlayer = async (interaction: CommandInteraction) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { options, guildId, client } = interaction;
@@ -26,9 +26,7 @@ export const startPlayer = async (interaction: CommandInteraction) => {
     return interaction.reply('Please provide a URL.');
   }
 
-  // ...and if it can...
   try {
-    // Get the video meta data and stream
     const stream = await fetchStream(youtubeUrl);
     const meta = await fetchMeta(youtubeUrl);
     currentQueueRef.current = {

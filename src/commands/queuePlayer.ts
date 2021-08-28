@@ -1,7 +1,8 @@
 import { CommandInteraction } from 'discord.js';
 import { currentQueueRef } from 'src/state/queue';
 
-import { fetchMeta } from './utils/fetchYoutube.js';
+import { fetchMeta, fetchStream } from './utils/fetchYoutube.js';
+import { playAudio } from './utils/playAudio.js';
 
 export const queuePlayer = async (interaction: CommandInteraction) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
@@ -26,10 +27,15 @@ export const queuePlayer = async (interaction: CommandInteraction) => {
 
   try {
     const meta = await fetchMeta(youtubeUrl);
-    if (currentQueueRef) currentQueueRef.queue.push(meta);
-    interaction.reply(
-      `Added ${meta.title} to the queue. It's track #${currentQueueRef.queue.length}.`
-    );
+    if (!currentQueueRef.queue.length) {
+      const stream = await fetchStream(youtubeUrl);
+      playAudio(interaction, stream, voiceChannel.id, guild);
+    } else {
+      currentQueueRef.queue.push(meta);
+      interaction.reply(
+        `Added ${meta.title} to the queue. It's track #${currentQueueRef.queue.length}.`
+      );
+    }
   } catch (e) {
     const { message } = e as Error;
     interaction.reply(message);

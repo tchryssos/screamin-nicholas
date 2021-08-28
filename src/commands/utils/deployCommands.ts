@@ -3,7 +3,7 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import dotenv from 'dotenv';
 
-import { PLAY, STOP } from '../../constants/commands.js';
+import { PLAY, QUEUE, STOP } from '../../constants/commands.js';
 
 dotenv.config();
 
@@ -19,6 +19,12 @@ const commands = [
   new SlashCommandBuilder()
     .setName(STOP)
     .setDescription('Stop the currently playing audio'),
+  new SlashCommandBuilder()
+    .setName(QUEUE)
+    .setDescription('Queue specified audio for playback')
+    .addStringOption((option) =>
+      option.setName('url').setDescription('the url you want to queue')
+    ),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);
