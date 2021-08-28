@@ -1,9 +1,7 @@
 import ytdl from 'ytdl-core';
 
-export const fetchStream = async (youtubeUrl: string) => {
-  const stream = ytdl(youtubeUrl, { filter: 'audioonly', dlChunkSize: 0 });
-  return stream;
-};
+export const fetchStream = async (youtubeUrl: string) =>
+  ytdl(youtubeUrl, { filter: 'audioonly', dlChunkSize: 0 });
 
 export const fetchMeta = async (youtubeUrl: string) => {
   const {
@@ -13,5 +11,5 @@ export const fetchMeta = async (youtubeUrl: string) => {
       lengthSeconds,
     },
   } = await ytdl.getBasicInfo(youtubeUrl);
-  return { title, author: name, lengthSeconds };
+  return { title, author: name, lengthSeconds, url: youtubeUrl };
 };
