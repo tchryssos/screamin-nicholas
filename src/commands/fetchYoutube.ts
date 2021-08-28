@@ -1,19 +1,17 @@
 import ytdl from 'ytdl-core';
 
-import { currentQueueRef } from '../state/queue.js';
-
-export const fetchYoutube = async (youtubeUrl: string) => {
-  const {
-    videoDetails: { title, author, lengthSeconds },
-  } = await ytdl.getBasicInfo(youtubeUrl);
+export const fetchStream = async (youtubeUrl: string) => {
   const stream = ytdl(youtubeUrl, { filter: 'audioonly', dlChunkSize: 0 });
-  currentQueueRef.current = {
-    stream,
-    meta: {
+  return stream;
+};
+
+export const fetchMeta = async (youtubeUrl: string) => {
+  const {
+    videoDetails: {
       title,
-      author: author.name,
+      author: { name },
       lengthSeconds,
     },
-  };
-  return stream;
+  } = await ytdl.getBasicInfo(youtubeUrl);
+  return { title, author: name, lengthSeconds };
 };
