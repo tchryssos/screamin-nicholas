@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 // This file only slightly modified from https://javascript.plainenglish.io/playing-youtube-audio-in-the-background-using-javascript-on-mobile-c19aea937ec1
 import express from 'express';
-import path from 'path';
 import ytdl from 'ytdl-core';
 
 const app = express();

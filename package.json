@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "A discord bot",
   "type": "module",
-  "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && npx tsc && uglifyjs dist/index.js -m -c -o dist/index.js",
-    "start": "node .",
+    "build": "rm -rf dist && npx tsc",
+    "start": "npm run build && node dist/index.js",
     "start:server": "node dist/streamingServer.js",
-    "deployCommands": "node dist/deployCommands.js"
+    "deployCommands": "npm run build && node dist/deployCommands.js"
   },
   "author": "",
   "license": "ISC",
@@ -28,12 +27,15 @@
   },
   "dependencies": {
     "@discordjs/builders": "^0.5.0",
+    "@discordjs/opus": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "ffmpeg-static": "^4.4.0",
+    "libsodium-wrappers": "^0.7.9",
     "ytdl-core": "^4.9.1"
   },
   "husky": {

@@ -12,11 +12,11 @@ const commands = [
     .setName('ping')
     .setDescription('Replies with pong!'),
   new SlashCommandBuilder()
-    .setName('server')
-    .setDescription('Replies with server info!'),
-  new SlashCommandBuilder()
-    .setName('user')
-    .setDescription('Replies with user info!'),
+    .setName('play')
+    .setDescription('Play youtube audio in your voice channel')
+    .addStringOption((option) =>
+      option.setName('url').setDescription('the url you want to play')
+    ),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);
