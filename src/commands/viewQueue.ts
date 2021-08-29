@@ -23,7 +23,10 @@ const viewQueue = (interaction: CommandInteraction) => {
 export const viewQueueResponder = (interaction: CommandInteraction) => {
   validationsWrapper(
     interaction,
-    { shouldHaveQueue: true, shouldBeInServer: false },
+    {
+      shouldHaveQueue: { validate: true },
+      shouldBeInServer: { validate: false },
+    },
     viewQueue
   );
 };

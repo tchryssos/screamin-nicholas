@@ -1,6 +1,11 @@
+type ValidationFields = {
+  validate: boolean;
+  customError?: string;
+};
+
 export type ValidationObj = {
-  shouldBeInServer?: boolean;
-  shouldBeInVoice?: boolean;
-  shouldHaveUrl?: boolean;
-  shouldHaveQueue?: boolean;
+  shouldBeInServer?: ValidationFields;
+  shouldBeInVoice?: ValidationFields;
+  shouldHaveUrl?: ValidationFields;
+  shouldHaveQueue?: ValidationFields;
 };

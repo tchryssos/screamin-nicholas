@@ -8,14 +8,14 @@ export const validationsWrapper = (
   callback: (interaction: CommandInteraction) => void
 ) => {
   const {
-    shouldBeInServer = true,
+    shouldBeInServer = { validate: true },
     shouldBeInVoice,
     shouldHaveQueue,
     shouldHaveUrl,
   } = validationObj;
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { options, guildId, client } = interaction;
-  if (shouldBeInServer) {
+  if (shouldBeInServer?.validate) {
     if (!guildId) {
       return interaction.reply('Please only run this command in a server.');
     }
@@ -24,21 +24,26 @@ export const validationsWrapper = (
     const member = guild.members.cache.get(interaction.member!.user.id);
 
     const voiceChannel = member!.voice.channel;
-    if (!voiceChannel && shouldBeInVoice) {
+    if (!voiceChannel && shouldBeInVoice?.validate) {
       return interaction.reply(
-        'Please join a voice channel before playing audio.'
+        shouldBeInVoice.customError ||
+          'Please join a voice channel before playing audio.'
       );
     }
   }
   const youtubeUrl = options.getString('url');
-  if (!youtubeUrl && shouldHaveUrl) {
-    return interaction.reply('Please provide a URL.');
+  if (!youtubeUrl && shouldHaveUrl?.validate) {
+    return interaction.reply(
+      shouldHaveUrl.customError || 'Please provide a URL.'
+    );
   }
 
   const queueLength = currentQueueRef.queue.length;
 
-  if (!queueLength && shouldHaveQueue) {
-    interaction.reply("There's nothing in the queue!");
+  if (!queueLength && shouldHaveQueue?.validate) {
+    interaction.reply(
+      shouldHaveQueue.customError || "There's nothing in the queue!"
+    );
   }
 
   return callback(interaction);
