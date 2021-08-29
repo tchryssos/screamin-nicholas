@@ -10,7 +10,6 @@ import { CommandInteraction, Guild } from 'discord.js';
 import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { YTDLStream } from '../../typings/queue';
-import { fetchStream } from './fetchYoutube.js';
 import { playNextTrack } from './playNextTrack.js';
 
 export const playAudio = (

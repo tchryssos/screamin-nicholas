@@ -1,22 +1,13 @@
 import { CommandInteraction } from 'discord.js';
 
 import { currentQueueRef } from '../state/queue.js';
+import { validationsWrapper } from './utils/validationsWrapper.js';
 
 const queueDisplayLimit = 10;
 
-export const viewQueue = (interaction: CommandInteraction) => {
-  const { guildId } = interaction;
-  if (!guildId) {
-    return interaction.reply('Please only run this command in a server.');
-  }
-
-  const queueLength = currentQueueRef.queue.length;
-
-  if (!queueLength) {
-    interaction.reply("There's nothing in the queue!");
-  }
-
-  const trackList = currentQueueRef.queue
+const viewQueue = (interaction: CommandInteraction) => {
+  const queue = currentQueueRef.queue;
+  const trackList = queue
     .slice(0, queueDisplayLimit)
     .reduce((listString, currentMeta, i) => {
       return `${listString}\n#${i + 1}: ${currentMeta.title}`;
@@ -24,7 +15,15 @@ export const viewQueue = (interaction: CommandInteraction) => {
 
   interaction.reply(
     `Here are the ${
-      queueLength > queueDisplayLimit ? `next ${queueDisplayLimit} ` : ''
+      queue.length > queueDisplayLimit ? `next ${queueDisplayLimit} ` : ''
     }tracks in the queue:\n${trackList}`
+  );
+};
+
+export const viewQueueResponder = (interaction: CommandInteraction) => {
+  validationsWrapper(
+    interaction,
+    { shouldHaveQueue: true, shouldBeInServer: false },
+    viewQueue
   );
 };

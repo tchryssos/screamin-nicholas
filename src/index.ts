@@ -2,10 +2,11 @@ import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
 import { queuePlayer } from './commands/queuePlayer.js';
+import { skipTrack } from './commands/skipTrack.js';
 import { startPlayer } from './commands/startPlayer.js';
 import { stopPlayer } from './commands/stopPlayer.js';
-import { viewQueue } from './commands/viewQueue.js';
-import { PLAY, QUEUE, STOP, VIEW_QUEUE } from './constants/commands.js';
+import { viewQueueResponder } from './commands/viewQueue.js';
+import { PLAY, QUEUE, SKIP, STOP, VIEW_QUEUE } from './constants/commands.js';
 
 dotenv.config();
 
@@ -39,7 +40,10 @@ client.on('interactionCreate', async (interaction) => {
       queuePlayer(interaction);
       break;
     case VIEW_QUEUE:
-      viewQueue(interaction);
+      viewQueueResponder(interaction);
+      break;
+    case SKIP:
+      skipTrack(interaction);
       break;
   }
 });
