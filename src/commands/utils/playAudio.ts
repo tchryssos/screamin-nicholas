@@ -11,13 +11,14 @@ import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { YTDLStream } from '../../typings/queue';
 import { fetchStream } from './fetchYoutube.js';
+import { playNextTrack } from './playNextTrack.js';
 
 export const playAudio = (
   interaction: CommandInteraction,
   stream: YTDLStream,
   voiceChannelId: string,
   guild: Guild,
-  alreadyReplied?: boolean
+  alreadyRepliedToInteraction?: boolean
 ) => {
   const initialPlayer = currentQueueRef.player;
   let player = initialPlayer;
@@ -44,28 +45,24 @@ export const playAudio = (
   /*
     Since we can't respond to an interaction twice
     as in the case of an IDLE status re-firing playAudio with the next in the queue
-    we need to send a normal message to a channel rather than reply to an interaction
+    we need to send a normal message to a channel
   */
   const nowPlayingMessage = `Now playing: ${currentQueueRef.current?.meta.title}`;
-  if (alreadyReplied) {
+  if (alreadyRepliedToInteraction) {
     interaction.channel?.send(nowPlayingMessage);
   } else {
     interaction.reply(nowPlayingMessage);
   }
 
-  player.on(AudioPlayerStatus.Idle, async () => {
-    if (currentQueueRef.queue.length) {
-      const nextMeta = currentQueueRef.queue.shift()!;
-      const stream = await fetchStream(nextMeta.url);
-      currentQueueRef.current = {
-        meta: nextMeta,
-        stream,
-      };
-      playAudio(interaction, stream, voiceChannelId, guild, true);
-    } else {
-      connection.destroy();
-      currentQueueRef.player = null;
-      currentQueueRef.current = null;
-    }
-  });
+  if (!initialPlayer) {
+    player.on(AudioPlayerStatus.Idle, async () => {
+      if (currentQueueRef.queue.length) {
+        await playNextTrack(interaction, voiceChannelId, guild);
+      } else {
+        connection.destroy();
+        currentQueueRef.player = null;
+        currentQueueRef.current = null;
+      }
+    });
+  }
 };

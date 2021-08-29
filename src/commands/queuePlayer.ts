@@ -37,7 +37,7 @@ export const queuePlayer = async (interaction: CommandInteraction) => {
     } else {
       currentQueueRef.queue.push(meta);
       interaction.reply(
-        `Added ${meta.title} to the queue. It's #${currentQueueRef.queue.length} in the queue.`
+        `Added "${meta.title}" to the queue. It's #${currentQueueRef.queue.length} in the queue.`
       );
     }
   } catch (e) {
