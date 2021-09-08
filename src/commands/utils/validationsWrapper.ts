@@ -4,8 +4,10 @@ import {
   StageChannel,
   VoiceChannel,
 } from 'discord.js';
-import { currentQueueRef } from 'src/state/queue';
-import { InteractionData, ValidationObj } from 'src/typings/validations';
+
+import { currentQueueRef } from '../../state/queue.js';
+// eslint-disable-next-line import/extensions
+import { InteractionData, ValidationObj } from '../../typings/validations';
 
 export const validationsWrapper = (
   interaction: CommandInteraction,

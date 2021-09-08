@@ -1,7 +1,7 @@
 import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
-import { queuePlayer } from './commands/queuePlayer.js';
+import { queuePlayerResponder } from './commands/queuePlayer.js';
 import { skipTrack } from './commands/skipTrack.js';
 import { startPlayerResponder } from './commands/startPlayer.js';
 import { stopPlayer } from './commands/stopPlayer.js';
@@ -37,7 +37,7 @@ client.on('interactionCreate', async (interaction) => {
       stopPlayer(interaction);
       break;
     case QUEUE:
-      queuePlayer(interaction);
+      queuePlayerResponder(interaction);
       break;
     case VIEW_QUEUE:
       viewQueueResponder(interaction);

@@ -8,6 +8,7 @@ export const stopPlayer = (interaction: CommandInteraction) => {
     player.pause();
     interaction.reply('Stopping player');
     currentQueueRef.current = null;
+    currentQueueRef.queue = [];
   } else {
     interaction.reply('Nothing is playing');
   }

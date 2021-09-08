@@ -1,34 +1,25 @@
 import { CommandInteraction } from 'discord.js';
 
 import { currentQueueRef } from '../state/queue.js';
+// eslint-disable-next-line import/extensions
+import { InteractionData } from '../typings/validations';
 import { fetchMeta, fetchStream } from './utils/fetchYoutube.js';
 import { playAudio } from './utils/playAudio.js';
+import { validationsWrapper } from './utils/validationsWrapper.js';
 
-export const queuePlayer = async (interaction: CommandInteraction) => {
+export const queuePlayer = async (
+  interaction: CommandInteraction,
+  interactionData: InteractionData
+) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
-  const { options, guildId, client } = interaction;
-  if (!guildId) {
-    return interaction.reply('Please only run this command in a server.');
-  }
-
-  const guild = client.guilds.cache.get(guildId)!;
-  const member = guild.members.cache.get(interaction.member!.user.id);
-
-  const voiceChannel = member!.voice.channel;
-  if (!voiceChannel) {
-    return interaction.reply(
-      'Please join a voice channel before queueing audio.'
-    );
-  }
-  const youtubeUrl = options.getString('url');
-  if (!youtubeUrl) {
-    return interaction.reply('Please provide a URL.');
-  }
-
+  const { url, voiceChannel, guild } = interactionData;
   try {
-    const meta = await fetchMeta(youtubeUrl);
+    if (!url || !voiceChannel || !guild) {
+      throw new Error('Something went wrong fetching your info from Discord');
+    }
+    const meta = await fetchMeta(url);
     if (!currentQueueRef.current) {
-      const stream = await fetchStream(youtubeUrl);
+      const stream = await fetchStream(url);
       currentQueueRef.current = {
         meta,
         stream,
@@ -45,3 +36,10 @@ export const queuePlayer = async (interaction: CommandInteraction) => {
     interaction.reply(message);
   }
 };
+
+export const queuePlayerResponder = (interaction: CommandInteraction) =>
+  validationsWrapper(
+    interaction,
+    { shouldBeInVoice: { validate: true }, shouldHaveUrl: { validate: true } },
+    queuePlayer
+  );
