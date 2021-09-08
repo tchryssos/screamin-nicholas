@@ -1,11 +1,19 @@
-import { CommandInteraction } from 'discord.js';
+import {
+  CommandInteraction,
+  Guild,
+  StageChannel,
+  VoiceChannel,
+} from 'discord.js';
 import { currentQueueRef } from 'src/state/queue';
-import { ValidationObj } from 'src/typings/validations';
+import { InteractionData, ValidationObj } from 'src/typings/validations';
 
 export const validationsWrapper = (
   interaction: CommandInteraction,
   validationObj: ValidationObj,
-  callback: (interaction: CommandInteraction) => void
+  callback: (
+    interaction: CommandInteraction,
+    interactionData: InteractionData
+  ) => void
 ) => {
   const {
     shouldBeInServer = { validate: true },
@@ -15,15 +23,18 @@ export const validationsWrapper = (
   } = validationObj;
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { options, guildId, client } = interaction;
+  let guild: Guild | null = null;
+  let voiceChannel: VoiceChannel | StageChannel | null = null;
+
   if (shouldBeInServer?.validate) {
     if (!guildId) {
       return interaction.reply('Please only run this command in a server.');
     }
 
-    const guild = client.guilds.cache.get(guildId)!;
+    guild = client.guilds.cache.get(guildId)!;
     const member = guild.members.cache.get(interaction.member!.user.id);
 
-    const voiceChannel = member!.voice.channel;
+    voiceChannel = member!.voice.channel;
     if (!voiceChannel && shouldBeInVoice?.validate) {
       return interaction.reply(
         shouldBeInVoice.customError ||
@@ -31,8 +42,8 @@ export const validationsWrapper = (
       );
     }
   }
-  const youtubeUrl = options.getString('url');
-  if (!youtubeUrl && shouldHaveUrl?.validate) {
+  const url = options.getString('url');
+  if (!url && shouldHaveUrl?.validate) {
     return interaction.reply(
       shouldHaveUrl.customError || 'Please provide a URL.'
     );
@@ -46,5 +57,5 @@ export const validationsWrapper = (
     );
   }
 
-  return callback(interaction);
+  return callback(interaction, { url, guild, voiceChannel });
 };

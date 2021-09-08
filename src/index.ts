@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 import { queuePlayer } from './commands/queuePlayer.js';
 import { skipTrack } from './commands/skipTrack.js';
-import { startPlayer } from './commands/startPlayer.js';
+import { startPlayerResponder } from './commands/startPlayer.js';
 import { stopPlayer } from './commands/stopPlayer.js';
 import { viewQueueResponder } from './commands/viewQueue.js';
 import { PLAY, QUEUE, SKIP, STOP, VIEW_QUEUE } from './constants/commands.js';
@@ -31,7 +31,7 @@ client.on('interactionCreate', async (interaction) => {
 
   switch (commandName) {
     case PLAY:
-      startPlayer(interaction);
+      startPlayerResponder(interaction);
       break;
     case STOP:
       stopPlayer(interaction);
