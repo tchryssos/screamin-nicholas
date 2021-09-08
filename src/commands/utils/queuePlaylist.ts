@@ -26,7 +26,9 @@ export const queuePlaylist = async (
       url: i.url,
     }));
     currentQueueRef.queue = [...currentQueueRef.queue, ...itemsMeta];
-    interaction.channel?.send(`Added ${itemsMeta.length} songs to the queue!`);
+    await interaction.channel?.send(
+      `Added ${itemsMeta.length} songs to the queue!`
+    );
     callback?.(itemsMeta);
   } else {
     throw new Error('Please provide a valid playlist.');

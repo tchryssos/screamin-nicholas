@@ -20,7 +20,10 @@ const commands = [
     .setName(PLAY)
     .setDescription('Play specified audio in your voice channel')
     .addStringOption((option) =>
-      option.setName('url').setDescription('the url you want to play')
+      option
+        .setName('url')
+        .setDescription('the url you want to play')
+        .setRequired(true)
     ),
   new SlashCommandBuilder()
     .setName(STOP)
@@ -29,7 +32,10 @@ const commands = [
     .setName(QUEUE)
     .setDescription('Queue specified audio for playback')
     .addStringOption((option) =>
-      option.setName('url').setDescription('the url you want to queue')
+      option
+        .setName('url')
+        .setDescription('the url you want to queue')
+        .setRequired(true)
     ),
   new SlashCommandBuilder()
     .setName(VIEW_QUEUE)
