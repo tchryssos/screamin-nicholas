@@ -1,19 +1,21 @@
 import { CommandInteraction } from 'discord.js';
 
-export const skipTrack = (interaction: CommandInteraction) => {
-  const { client, guildId } = interaction;
+// eslint-disable-next-line import/extensions
+import { InteractionData } from '../typings/validations';
+import { playNextTrack } from './utils/playNextTrack.js';
+import { validationsWrapper } from './utils/validationsWrapper.js';
 
-  if (!guildId) {
-    return interaction.reply('Please only run this command in a server.');
-  }
-
-  const guild = client.guilds.cache.get(guildId)!;
-  const member = guild.members.cache.get(interaction.member!.user.id);
-
-  const voiceChannel = member!.voice.channel;
-  if (!voiceChannel) {
-    return interaction.reply(
-      'Please join a voice channel before playing audio.'
-    );
-  }
+export const skipTrack = (
+  interaction: CommandInteraction,
+  interactionData: InteractionData
+) => {
+  const { voiceChannel, guild } = interactionData;
+  playNextTrack(interaction, voiceChannel!.id, guild!, false);
 };
+
+export const skipTrackResponder = (interaction: CommandInteraction) =>
+  validationsWrapper(
+    interaction,
+    { shouldBeInVoice: { validate: true } },
+    skipTrack
+  );

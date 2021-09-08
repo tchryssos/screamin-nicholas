@@ -2,7 +2,7 @@ import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
 import { queuePlayerResponder } from './commands/queuePlayer.js';
-import { skipTrack } from './commands/skipTrack.js';
+import { skipTrack, skipTrackResponder } from './commands/skipTrack.js';
 import { startPlayerResponder } from './commands/startPlayer.js';
 import { stopPlayer } from './commands/stopPlayer.js';
 import { viewQueueResponder } from './commands/viewQueue.js';
@@ -43,7 +43,7 @@ client.on('interactionCreate', async (interaction) => {
       viewQueueResponder(interaction);
       break;
     case SKIP:
-      skipTrack(interaction);
+      skipTrackResponder(interaction);
       break;
   }
 });
