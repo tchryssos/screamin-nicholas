@@ -16,7 +16,9 @@ const viewQueue = (interaction: CommandInteraction) => {
   interaction.reply(
     `Here are the ${
       queue.length > queueDisplayLimit ? `next ${queueDisplayLimit} ` : ''
-    }tracks in the queue:\n${trackList}`
+    }tracks in the queue:\n${trackList}\n\nThere are ${
+      queue.length
+    } songs in the queue.`
   );
 };
 

@@ -1,1 +1,1 @@
-export const YOUTUBE_PLAYLIST_REGEX = /(&|\?)?list=/gm;
+export const YOUTUBE_PLAYLIST_REGEX = /list=/;

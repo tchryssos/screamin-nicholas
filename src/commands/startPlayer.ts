@@ -24,7 +24,7 @@ export const startPlayer = async (
     if (isPlaylist) {
       currentQueueRef.queue = [];
       await queuePlaylist(url, interaction, voiceChannel, guild, async () =>
-        playNextTrack(interaction, voiceChannel.id, guild, false)
+        playNextTrack(interaction, voiceChannel.id, guild, true)
       );
     } else {
       const stream = await fetchStream(url);
