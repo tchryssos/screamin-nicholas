@@ -5,12 +5,20 @@ import { validationsWrapper } from './utils/validationsWrapper.js';
 
 const queueDisplayLimit = 10;
 
+const positionSpaces = {
+  1: 3,
+  2: 2,
+  3: 1,
+};
+
 const viewQueue = (interaction: CommandInteraction) => {
   const queue = currentQueueRef.queue;
   const trackList = queue
     .slice(0, queueDisplayLimit)
     .reduce((listString, currentMeta, i) => {
-      return `${listString}\n#${i + 1}:  ${currentMeta.title}`;
+      return `${listString}\n#${i + 1}:${' '.repeat(
+        positionSpaces[(i + 1).toString().length]
+      )}${currentMeta.title}`;
     }, '');
 
   interaction.reply(

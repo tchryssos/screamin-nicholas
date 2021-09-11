@@ -13,7 +13,7 @@ import {
 
 dotenv.config();
 
-const { TOKEN: token, GUILD_ID: guildId, CLIENT_ID: clientId } = process.env;
+const { TOKEN: token, CLIENT_ID: clientId } = process.env;
 
 const commands = [
   new SlashCommandBuilder()
@@ -48,9 +48,16 @@ const commands = [
 const rest = new REST({ version: '9' }).setToken(token!);
 
 (async () => {
+  const guildIds = [
+    process.env.GUILD_ID,
+    process.env.ANTHONY_GUILD_ID,
+    process.env.TDB_GUILD_ID,
+  ];
   try {
-    await rest.put(Routes.applicationGuildCommands(clientId!, guildId!), {
-      body: commands,
+    guildIds.forEach(async (id) => {
+      await rest.put(Routes.applicationGuildCommands(clientId!, id!), {
+        body: commands,
+      });
     });
     // eslint-disable-next-line no-console
     console.log('Successfully registered application commands.');

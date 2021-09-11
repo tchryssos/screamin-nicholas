@@ -16,6 +16,9 @@ export const skipTrack = (
 export const skipTrackResponder = (interaction: CommandInteraction) =>
   validationsWrapper(
     interaction,
-    { shouldBeInVoice: { validate: true } },
+    {
+      shouldBeInVoice: { validate: true },
+      shouldHaveQueue: { validate: true },
+    },
     skipTrack
   );

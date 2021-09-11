@@ -1,10 +1,11 @@
 import { CommandInteraction } from 'discord.js';
 
 import { currentQueueRef } from '../state/queue.js';
+import { validationsWrapper } from './utils/validationsWrapper.js';
 
-export const stopPlayer = (interaction: CommandInteraction) => {
-  const { player } = currentQueueRef;
-  if (player) {
+const stopPlayer = (interaction: CommandInteraction) => {
+  const { player, current } = currentQueueRef;
+  if (player && current) {
     player.pause();
     interaction.reply('Stopping player');
     currentQueueRef.current = null;
@@ -13,3 +14,12 @@ export const stopPlayer = (interaction: CommandInteraction) => {
     interaction.reply('Nothing is playing');
   }
 };
+
+export const stopPlayerResponder = (interaction: CommandInteraction) =>
+  validationsWrapper(
+    interaction,
+    {
+      shouldBeInVoice: { validate: true },
+    },
+    stopPlayer
+  );

@@ -2,9 +2,9 @@ import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
 import { queuePlayerResponder } from './commands/queuePlayer.js';
-import { skipTrack, skipTrackResponder } from './commands/skipTrack.js';
+import { skipTrackResponder } from './commands/skipTrack.js';
 import { startPlayerResponder } from './commands/startPlayer.js';
-import { stopPlayer } from './commands/stopPlayer.js';
+import { stopPlayerResponder } from './commands/stopPlayer.js';
 import { viewQueueResponder } from './commands/viewQueue.js';
 import { PLAY, QUEUE, SKIP, STOP, VIEW_QUEUE } from './constants/commands.js';
 
@@ -27,24 +27,28 @@ client.once('ready', () => {
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isCommand()) return;
 
-  const { commandName } = interaction;
+  try {
+    const { commandName } = interaction;
 
-  switch (commandName) {
-    case PLAY:
-      startPlayerResponder(interaction);
-      break;
-    case STOP:
-      stopPlayer(interaction);
-      break;
-    case QUEUE:
-      queuePlayerResponder(interaction);
-      break;
-    case VIEW_QUEUE:
-      viewQueueResponder(interaction);
-      break;
-    case SKIP:
-      skipTrackResponder(interaction);
-      break;
+    switch (commandName) {
+      case PLAY:
+        startPlayerResponder(interaction);
+        break;
+      case STOP:
+        stopPlayerResponder(interaction);
+        break;
+      case QUEUE:
+        queuePlayerResponder(interaction);
+        break;
+      case VIEW_QUEUE:
+        viewQueueResponder(interaction);
+        break;
+      case SKIP:
+        skipTrackResponder(interaction);
+        break;
+    }
+  } catch {
+    interaction.channel?.send('Something went wrong!');
   }
 });
 
