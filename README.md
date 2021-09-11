@@ -6,7 +6,7 @@ Use [this link](https://discord.com/api/oauth2/authorize?client_id=8806285733696
 
 ### Development
 
-Screamin' Nicholas uses Node 16 and typescript. You can use `npm start` to spin up Nick locally, or use `npm run build` to create a build (that gets put into the `dist` folder) and upload it to a server.
+Screamin' Nicholas uses Node 16 and typescript. You can use `npm start` to spin Nick up locally, or use `npm run build` to create a build (that gets put into the `dist` folder) and upload it to a server.
 
 ### Updating Commands
 
@@ -14,6 +14,5 @@ Screamin' Nicholas uses Node 16 and typescript. You can use `npm start` to spin 
 
 ### TODOs
 
-- Standardize error and response messaging
 - Search by title or by Spotify url
 - Allow or deny specific server users from using Screamin' Nicholas
