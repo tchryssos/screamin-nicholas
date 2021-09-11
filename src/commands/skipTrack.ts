@@ -19,6 +19,7 @@ export const skipTrackResponder = (interaction: CommandInteraction) =>
     {
       shouldBeInVoice: { validate: true },
       shouldHaveQueue: { validate: true },
+      shouldBePlaying: { validate: true },
     },
     skipTrack
   );

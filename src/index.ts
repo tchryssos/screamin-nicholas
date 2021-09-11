@@ -7,6 +7,7 @@ import { startPlayerResponder } from './commands/startPlayer.js';
 import { stopPlayerResponder } from './commands/stopPlayer.js';
 import { viewQueueResponder } from './commands/viewQueue.js';
 import { PLAY, QUEUE, SKIP, STOP, VIEW_QUEUE } from './constants/commands.js';
+import { GENERAL_ERROR_MESSAGE } from './constants/messages.js';
 
 dotenv.config();
 
@@ -48,7 +49,7 @@ client.on('interactionCreate', async (interaction) => {
         break;
     }
   } catch {
-    interaction.channel?.send('Something went wrong!');
+    interaction.channel?.send(GENERAL_ERROR_MESSAGE);
   }
 });
 

@@ -2,39 +2,44 @@
 import { VideoMeta } from '../typings/queue';
 
 // START - Command Descriptions - START
+const createUrlDescriptionString = (verb: string) =>
+  `The url of the audio you want to ${verb}`;
 export const PLAY_DESCRIPTION = 'Play specified audio in your voice channel';
-export const PLAY_URL_DESCRIPTION = 'the url you want to play';
+export const PLAY_URL_DESCRIPTION = createUrlDescriptionString('play');
 
-export const STOP_DESCRIPTION = 'Stop the currently playing audio';
+export const STOP_DESCRIPTION =
+  'Stop the currently playing audio and clear the current queue';
 
-export const QUEUE_DESCRIPTION = 'Queue specified audio for playback';
-export const QUEUE_URL_DESCRIPTION = 'the url you want to queue';
+export const QUEUE_DESCRIPTION = 'Add audio to the queue';
+export const QUEUE_URL_DESCRIPTION = createUrlDescriptionString('queue');
 
-export const VIEW_QUEUE_DESCRIPTION = 'View the current track queue';
+export const VIEW_QUEUE_DESCRIPTION = 'View the current audio queue';
 
-export const SKIP_DESCRIPTION = 'Skip the current track';
+export const SKIP_DESCRIPTION = 'Skip the currently playing audio';
 // END - Command Descriptions - END
 
-// START - Validation Messages - START
+// START - Validation / Error Messages - START
 export const SERVER_VALIDATION_ERROR =
-  'Please only run this command in a server.';
+  'You can only run this command from inside a server';
 export const VOICE_CHANNEL_VALIDATION_ERROR =
-  'Please join a voice channel before playing audio.';
-export const URL_VALIDATION_ERROR = 'Please provide a URL.';
-export const QUEUE_VALIDATION_ERROR = "There's nothing in the queue!";
+  'Please join a voice channel before trying to play audio';
+export const URL_VALIDATION_ERROR = 'Please provide a URL';
+export const QUEUE_VALIDATION_ERROR = "There's nothing in the queue";
 export const DISCORD_INFO_FETCH_ERROR =
   'Something went wrong fetching your info from Discord';
 export const SHOULD_BE_PLAYING_VALIDATION_ERROR =
   'Nothing is currently playing';
-// END - Validation Messages - END
+export const GENERAL_ERROR_MESSAGE = 'Something went wrong';
+// END - Validation / Error Messages - END
 
 // START - Audio Status - START
-export const STOPPING_MESSAGE = 'Stopping player';
+export const STOPPING_MESSAGE =
+  'Stopping the currently playing audio and clearing the queue';
 // END - Audio Status - END
 
 // START - Misc - START
 export const REGISTER_COMMANDS_SUCCESS =
-  'Successfully registered application commands.';
+  'Successfully registered application commands';
 // END - Misc - END
 
 // START - Functions - START
@@ -46,11 +51,11 @@ export const createNowPlayingMessage = (title: string) =>
   `Now playing: ${title}`;
 
 export const createAddedSongCountToQueueMessage = (count: number) =>
-  `Added ${count} songs to the queue!`;
+  `Added ${count} songs to the queue`;
 export const createAddedSongToQueueMessage = (
   title: string,
   queuePosition: number
-) => `Added "${title}" to the queue. It's #${queuePosition} in the queue.`;
+) => `Added "${title}" to the queue. It's #${queuePosition} in the queue`;
 
 const queueDisplayLimit = 10;
 const positionSpaces = {

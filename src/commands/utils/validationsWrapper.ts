@@ -56,16 +56,16 @@ export const validationsWrapper = (
     return interaction.reply(shouldHaveUrl.customError || URL_VALIDATION_ERROR);
   }
 
-  const queueLength = currentQueueRef.queue.length;
-
-  if (!queueLength && shouldHaveQueue?.validate) {
-    interaction.reply(shouldHaveQueue.customError || QUEUE_VALIDATION_ERROR);
-  }
-
   if (!currentQueueRef.current && shouldBePlaying?.validate) {
     interaction.reply(
       shouldBePlaying.customError || SHOULD_BE_PLAYING_VALIDATION_ERROR
     );
+  }
+
+  const queueLength = currentQueueRef.queue.length;
+
+  if (!queueLength && shouldHaveQueue?.validate) {
+    interaction.reply(shouldHaveQueue.customError || QUEUE_VALIDATION_ERROR);
   }
 
   return callback(interaction, { url, guild, voiceChannel });
