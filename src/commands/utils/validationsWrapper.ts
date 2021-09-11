@@ -5,6 +5,12 @@ import {
   VoiceChannel,
 } from 'discord.js';
 
+import {
+  QUEUE_VALIDATION_ERROR,
+  SERVER_VALIDATION_ERROR,
+  URL_VALIDATION_ERROR,
+  VOICE_CHANNEL_VALIDATION_ERROR,
+} from '../../constants/messages.js';
 import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData, ValidationObj } from '../../typings/validations';
@@ -30,7 +36,7 @@ export const validationsWrapper = (
 
   if (shouldBeInServer?.validate) {
     if (!guildId) {
-      return interaction.reply('Please only run this command in a server.');
+      return interaction.reply(SERVER_VALIDATION_ERROR);
     }
 
     guild = client.guilds.cache.get(guildId)!;
@@ -39,24 +45,19 @@ export const validationsWrapper = (
     voiceChannel = member!.voice.channel;
     if (!voiceChannel && shouldBeInVoice?.validate) {
       return interaction.reply(
-        shouldBeInVoice.customError ||
-          'Please join a voice channel before playing audio.'
+        shouldBeInVoice.customError || VOICE_CHANNEL_VALIDATION_ERROR
       );
     }
   }
   const url = options.getString('url');
   if (!url && shouldHaveUrl?.validate) {
-    return interaction.reply(
-      shouldHaveUrl.customError || 'Please provide a URL.'
-    );
+    return interaction.reply(shouldHaveUrl.customError || URL_VALIDATION_ERROR);
   }
 
   const queueLength = currentQueueRef.queue.length;
 
   if (!queueLength && shouldHaveQueue?.validate) {
-    interaction.reply(
-      shouldHaveQueue.customError || "There's nothing in the queue!"
-    );
+    interaction.reply(shouldHaveQueue.customError || QUEUE_VALIDATION_ERROR);
   }
 
   return callback(interaction, { url, guild, voiceChannel });

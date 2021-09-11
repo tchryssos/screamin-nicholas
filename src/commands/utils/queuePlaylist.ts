@@ -6,6 +6,7 @@ import {
 } from 'discord.js';
 import ytpl from 'ytpl';
 
+import { createAddedSongCountToQueueMessage } from '../../constants/messages.js';
 import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { VideoMeta } from '../../typings/queue';
@@ -26,7 +27,7 @@ export const queuePlaylist = async (
       url: i.url,
     }));
     currentQueueRef.queue = [...currentQueueRef.queue, ...itemsMeta];
-    interaction.reply(`Added ${itemsMeta.length} songs to the queue!`);
+    interaction.reply(createAddedSongCountToQueueMessage(itemsMeta.length));
     callback?.(itemsMeta);
   } else {
     throw new Error('Please provide a valid playlist.');

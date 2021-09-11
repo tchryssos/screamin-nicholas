@@ -7,6 +7,7 @@ import {
 } from '@discordjs/voice';
 import { CommandInteraction, Guild } from 'discord.js';
 
+import { createNowPlayingMessage } from '../../constants/messages.js';
 import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { YTDLStream } from '../../typings/queue';
@@ -46,7 +47,9 @@ export const playAudio = (
     as in the case of an IDLE status re-firing playAudio with the next in the queue
     we need to send a normal message to a channel
   */
-  const nowPlayingMessage = `Now playing: ${currentQueueRef.current?.meta.title}`;
+  const nowPlayingMessage = createNowPlayingMessage(
+    currentQueueRef.current?.meta.title || ''
+  );
   if (alreadyRepliedToInteraction) {
     interaction.channel?.send(nowPlayingMessage);
   } else {
