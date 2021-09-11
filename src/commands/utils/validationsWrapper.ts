@@ -6,6 +6,7 @@ import {
 } from 'discord.js';
 
 import {
+  CAN_INTERACT_VALIDATION_ERROR,
   QUEUE_VALIDATION_ERROR,
   SERVER_VALIDATION_ERROR,
   SHOULD_BE_PLAYING_VALIDATION_ERROR,
@@ -30,11 +31,18 @@ export const validationsWrapper = (
     shouldHaveQueue,
     shouldHaveUrl,
     shouldBePlaying,
+    isAllowedToInteract = { validate: true },
   } = validationObj;
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { options, guildId, client } = interaction;
   let guild: Guild | null = null;
   let voiceChannel: VoiceChannel | StageChannel | null = null;
+
+  if (isAllowedToInteract?.validate) {
+    if (currentQueueRef.banlist.includes(interaction.user.id)) {
+      return interaction.reply(CAN_INTERACT_VALIDATION_ERROR);
+    }
+  }
 
   if (shouldBeInServer?.validate) {
     if (!guildId) {

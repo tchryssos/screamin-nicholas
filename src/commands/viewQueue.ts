@@ -13,6 +13,7 @@ export const viewQueueResponder = (interaction: CommandInteraction) => {
     {
       shouldHaveQueue: { validate: true },
       shouldBeInServer: { validate: false },
+      isAllowedToInteract: { validate: false },
     },
     viewQueue
   );

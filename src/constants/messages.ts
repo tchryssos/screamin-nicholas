@@ -37,6 +37,7 @@ export const DISCORD_INFO_FETCH_ERROR =
 export const SHOULD_BE_PLAYING_VALIDATION_ERROR =
   'Nothing is currently playing';
 export const GENERAL_ERROR_MESSAGE = 'Something went wrong';
+export const CAN_INTERACT_VALIDATION_ERROR = 'You are not allowed to do that';
 // END - Validation / Error Messages - END
 
 // START - Audio Status - START

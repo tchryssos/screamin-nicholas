@@ -5,4 +5,5 @@ export const currentQueueRef: CurrentQueueRef = {
   current: null,
   player: null,
   queue: [],
+  banlist: [],
 };

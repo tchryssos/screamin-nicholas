@@ -11,6 +11,7 @@ export type ValidationObj = {
   shouldHaveUrl?: ValidationFields;
   shouldHaveQueue?: ValidationFields;
   shouldBePlaying?: ValidationFields;
+  isAllowedToInteract?: ValidationFields;
 };
 
 export type InteractionData = {

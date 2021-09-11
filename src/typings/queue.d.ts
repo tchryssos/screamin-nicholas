@@ -17,4 +17,5 @@ export type CurrentQueueRef = {
   } | null;
   player: AudioPlayer | null;
   queue: VideoMeta[];
+  banlist: string[];
 };
