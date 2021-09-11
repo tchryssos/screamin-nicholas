@@ -1,5 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 
+import { DISCORD_INFO_FETCH_ERROR } from '../constants/messages.js';
 import { YOUTUBE_PLAYLIST_REGEX } from '../constants/regex.js';
 import { currentQueueRef } from '../state/queue.js';
 import { InteractionData } from '../typings/validations.js';
@@ -17,7 +18,7 @@ export const startPlayer = async (
   const { url, voiceChannel, guild } = interactionData;
   try {
     if (!url || !voiceChannel || !guild) {
-      throw new Error('Something went wrong fetching your info from discord.');
+      throw new Error(DISCORD_INFO_FETCH_ERROR);
     }
 
     const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(url);

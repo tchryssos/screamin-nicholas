@@ -1,5 +1,9 @@
 import { CommandInteraction, Guild } from 'discord.js';
 
+import {
+  createAddedSongToQueueMessage,
+  DISCORD_INFO_FETCH_ERROR,
+} from '../constants/messages.js';
 import { YOUTUBE_PLAYLIST_REGEX } from '../constants/regex.js';
 import { currentQueueRef } from '../state/queue.js';
 import { VideoMeta } from '../typings/queue.js';
@@ -33,7 +37,7 @@ export const queuePlayer = async (
   const { url, voiceChannel, guild } = interactionData;
   try {
     if (!url || !voiceChannel || !guild) {
-      throw new Error('Something went wrong fetching your info from Discord');
+      throw new Error(DISCORD_INFO_FETCH_ERROR);
     }
     const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(url);
     if (isPlaylist) {
@@ -61,7 +65,10 @@ export const queuePlayer = async (
       } else {
         currentQueueRef.queue.push(meta);
         interaction.reply(
-          `Added "${meta.title}" to the queue. It's #${currentQueueRef.queue.length} in the queue.`
+          createAddedSongToQueueMessage(
+            meta.title,
+            currentQueueRef.queue.length
+          )
         );
       }
     }

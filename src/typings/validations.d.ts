@@ -10,6 +10,7 @@ export type ValidationObj = {
   shouldBeInVoice?: ValidationFields;
   shouldHaveUrl?: ValidationFields;
   shouldHaveQueue?: ValidationFields;
+  shouldBePlaying?: ValidationFields;
 };
 
 export type InteractionData = {
