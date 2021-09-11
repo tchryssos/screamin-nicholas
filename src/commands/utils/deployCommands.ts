@@ -10,6 +10,16 @@ import {
   STOP,
   VIEW_QUEUE,
 } from '../../constants/commands.js';
+import {
+  PLAY_DESCRIPTION,
+  PLAY_URL_DESCRIPTION,
+  QUEUE_DESCRIPTION,
+  QUEUE_URL_DESCRIPTION,
+  REGISTER_COMMANDS_SUCCESS,
+  SKIP_DESCRIPTION,
+  STOP_DESCRIPTION,
+  VIEW_QUEUE_DESCRIPTION,
+} from '../../constants/messages.js';
 
 dotenv.config();
 
@@ -18,31 +28,27 @@ const { TOKEN: token, CLIENT_ID: clientId } = process.env;
 const commands = [
   new SlashCommandBuilder()
     .setName(PLAY)
-    .setDescription('Play specified audio in your voice channel')
+    .setDescription(PLAY_DESCRIPTION)
     .addStringOption((option) =>
       option
         .setName('url')
-        .setDescription('the url you want to play')
+        .setDescription(PLAY_URL_DESCRIPTION)
         .setRequired(true)
     ),
-  new SlashCommandBuilder()
-    .setName(STOP)
-    .setDescription('Stop the currently playing audio'),
+  new SlashCommandBuilder().setName(STOP).setDescription(STOP_DESCRIPTION),
   new SlashCommandBuilder()
     .setName(QUEUE)
-    .setDescription('Queue specified audio for playback')
+    .setDescription(QUEUE_DESCRIPTION)
     .addStringOption((option) =>
       option
         .setName('url')
-        .setDescription('the url you want to queue')
+        .setDescription(QUEUE_URL_DESCRIPTION)
         .setRequired(true)
     ),
   new SlashCommandBuilder()
     .setName(VIEW_QUEUE)
-    .setDescription('View the current track queue'),
-  new SlashCommandBuilder()
-    .setName(SKIP)
-    .setDescription('Skip the current track'),
+    .setDescription(VIEW_QUEUE_DESCRIPTION),
+  new SlashCommandBuilder().setName(SKIP).setDescription(SKIP_DESCRIPTION),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);
@@ -60,7 +66,7 @@ const rest = new REST({ version: '9' }).setToken(token!);
       });
     });
     // eslint-disable-next-line no-console
-    console.log('Successfully registered application commands.');
+    console.log(REGISTER_COMMANDS_SUCCESS);
   } catch (error) {
     console.error(error);
   }
