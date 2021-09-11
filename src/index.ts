@@ -1,12 +1,22 @@
 import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
+import { banMemberResponder } from './commands/banMember.js';
 import { queuePlayerResponder } from './commands/queuePlayer.js';
 import { skipTrackResponder } from './commands/skipTrack.js';
 import { startPlayerResponder } from './commands/startPlayer.js';
 import { stopPlayerResponder } from './commands/stopPlayer.js';
+import { unbanMemberResponder } from './commands/unbanMember.js';
 import { viewQueueResponder } from './commands/viewQueue.js';
-import { PLAY, QUEUE, SKIP, STOP, VIEW_QUEUE } from './constants/commands.js';
+import {
+  BAN,
+  PLAY,
+  QUEUE,
+  SKIP,
+  STOP,
+  UNBAN,
+  VIEW_QUEUE,
+} from './constants/commands.js';
 import { GENERAL_ERROR_MESSAGE } from './constants/messages.js';
 
 dotenv.config();
@@ -46,6 +56,12 @@ client.on('interactionCreate', async (interaction) => {
         break;
       case SKIP:
         skipTrackResponder(interaction);
+        break;
+      case BAN:
+        banMemberResponder(interaction);
+        break;
+      case UNBAN:
+        unbanMemberResponder(interaction);
         break;
     }
   } catch {

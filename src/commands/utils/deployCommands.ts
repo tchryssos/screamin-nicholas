@@ -4,13 +4,17 @@ import { Routes } from 'discord-api-types/v9';
 import dotenv from 'dotenv';
 
 import {
+  BAN,
   PLAY,
   QUEUE,
   SKIP,
   STOP,
+  UNBAN,
   VIEW_QUEUE,
 } from '../../constants/commands.js';
 import {
+  BAN_DESCRIPTION,
+  BAN_MEMBER_DESCRIPTION,
   PLAY_DESCRIPTION,
   PLAY_URL_DESCRIPTION,
   QUEUE_DESCRIPTION,
@@ -18,6 +22,7 @@ import {
   REGISTER_COMMANDS_SUCCESS,
   SKIP_DESCRIPTION,
   STOP_DESCRIPTION,
+  UNBAN_MEMBER_DESCRIPTION,
   VIEW_QUEUE_DESCRIPTION,
 } from '../../constants/messages.js';
 
@@ -49,6 +54,24 @@ const commands = [
     .setName(VIEW_QUEUE)
     .setDescription(VIEW_QUEUE_DESCRIPTION),
   new SlashCommandBuilder().setName(SKIP).setDescription(SKIP_DESCRIPTION),
+  new SlashCommandBuilder()
+    .setName(BAN)
+    .setDescription(BAN_DESCRIPTION)
+    .addMentionableOption((option) =>
+      option
+        .setName('member')
+        .setDescription(BAN_MEMBER_DESCRIPTION)
+        .setRequired(true)
+    ),
+  new SlashCommandBuilder()
+    .setName(UNBAN)
+    .setDescription(UNBAN_MEMBER_DESCRIPTION)
+    .addMentionableOption((option) =>
+      option
+        .setName('member')
+        .setDescription(UNBAN_MEMBER_DESCRIPTION)
+        .setRequired(true)
+    ),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);

@@ -16,6 +16,13 @@ export const QUEUE_URL_DESCRIPTION = createUrlDescriptionString('queue');
 export const VIEW_QUEUE_DESCRIPTION = 'View the current audio queue';
 
 export const SKIP_DESCRIPTION = 'Skip the currently playing audio';
+
+export const BAN_DESCRIPTION =
+  'Ban a server member from controlling playback for the duration of this session';
+export const BAN_MEMBER_DESCRIPTION = 'Member to ban';
+export const UNBAN_DESCRIPTION =
+  'Unban a server member from controlling playback';
+export const UNBAN_MEMBER_DESCRIPTION = 'Member to unban';
 // END - Command Descriptions - END
 
 // START - Validation / Error Messages - START
