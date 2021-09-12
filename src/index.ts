@@ -7,6 +7,7 @@ import { skipTrackResponder } from './commands/skipTrack.js';
 import { startPlayerResponder } from './commands/startPlayer.js';
 import { stopPlayerResponder } from './commands/stopPlayer.js';
 import { unbanMemberResponder } from './commands/unbanMember.js';
+import { viewBanlistResponder } from './commands/viewBanlist.js';
 import { viewQueueResponder } from './commands/viewQueue.js';
 import {
   BAN,
@@ -15,6 +16,7 @@ import {
   SKIP,
   STOP,
   UNBAN,
+  VIEW_BANLIST,
   VIEW_QUEUE,
 } from './constants/commands.js';
 import { GENERAL_ERROR_MESSAGE } from './constants/messages.js';
@@ -61,6 +63,9 @@ client.on('interactionCreate', async (interaction) => {
         break;
       case UNBAN:
         unbanMemberResponder(interaction);
+        break;
+      case VIEW_BANLIST:
+        viewBanlistResponder(interaction);
         break;
     }
   } catch (e) {

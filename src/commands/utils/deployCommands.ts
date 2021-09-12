@@ -12,6 +12,7 @@ import {
   STOP,
   UNBAN,
   URL_OPTION,
+  VIEW_BANLIST,
   VIEW_QUEUE,
 } from '../../constants/commands.js';
 import {
@@ -25,6 +26,7 @@ import {
   SKIP_DESCRIPTION,
   STOP_DESCRIPTION,
   UNBAN_MEMBER_DESCRIPTION,
+  VIEW_BANLIST_DESCRIPTION,
   VIEW_QUEUE_DESCRIPTION,
 } from '../../constants/messages.js';
 
@@ -74,6 +76,9 @@ const commands = [
         .setDescription(UNBAN_MEMBER_DESCRIPTION)
         .setRequired(true)
     ),
+  new SlashCommandBuilder()
+    .setName(VIEW_BANLIST)
+    .setDescription(VIEW_BANLIST_DESCRIPTION),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);

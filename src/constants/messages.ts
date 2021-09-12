@@ -23,6 +23,8 @@ export const BAN_MEMBER_DESCRIPTION = 'Member to ban';
 export const UNBAN_DESCRIPTION =
   'Unban a server member from controlling playback';
 export const UNBAN_MEMBER_DESCRIPTION = 'Member to unban';
+export const VIEW_BANLIST_DESCRIPTION =
+  "View the current members on the Screamin' Nicholas banlist";
 // END - Command Descriptions - END
 
 // START - Validation / Error Messages - START
@@ -92,5 +94,7 @@ export const createViewQueueMessage = (queue: VideoMeta[]) => {
 };
 
 export const createBannedMessage = (username: string, isNew = true) =>
-  `${username} is ${isNew ? 'now' : 'already'} banned`;
+  `${username} is ${
+    isNew ? 'now' : 'already'
+  } banned from using Screamin' Nicholas`;
 // END - Functions - END
