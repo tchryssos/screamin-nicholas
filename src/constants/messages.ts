@@ -98,10 +98,27 @@ export const createViewQueueMessage = (queue: VideoMeta[]) => {
   } songs in the queue.`;
 };
 
-export const createBannedMessage = (username: string, isNew = true) =>
-  `${username} is ${
-    isNew ? 'now' : 'already'
-  } banned from using Screamin' Nicholas`;
+export const createBannedMessage = (
+  username: string,
+  type: 'ban' | 'alreadyBanned' | 'notBanned' | 'unban'
+) => {
+  let adverb: string;
+  switch (type) {
+    case 'alreadyBanned':
+      adverb = 'already';
+      break;
+    case 'notBanned':
+      adverb = 'not';
+      break;
+    case 'unban':
+      adverb = 'no longer';
+      break;
+    default:
+      adverb = 'now';
+      break;
+  }
+  return `${username} is ${adverb} banned from using Screamin' Nicholas`;
+};
 
 export const createBanlistMessage = (usersString: string) =>
   `The following members are banned from affecting Screamin' Nicholas playback:\n${usersString}`;
