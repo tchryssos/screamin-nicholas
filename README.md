@@ -15,4 +15,3 @@ Screamin' Nicholas uses Node 16 and typescript. You can use `npm start` to spin 
 ### TODOs
 
 - Search by title or by Spotify url
-- Allow or deny specific server users from using Screamin' Nicholas
