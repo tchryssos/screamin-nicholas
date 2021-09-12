@@ -29,11 +29,11 @@ export const banMember = (interaction: CommandInteraction) => {
   }
 
   if (currentQueueRef.banlist.includes(id)) {
-    interaction.reply(createBannedMessage(username, 'alreadyBanned'));
+    return interaction.reply(createBannedMessage(username, 'alreadyBanned'));
   }
 
   currentQueueRef.banlist.push(id);
-  interaction.reply(createBannedMessage(username, 'ban'));
+  return interaction.reply(createBannedMessage(username, 'ban'));
 };
 
 export const banMemberResponder = (interaction: CommandInteraction) =>

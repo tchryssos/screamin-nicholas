@@ -30,11 +30,11 @@ export const unbanMember = (interaction: CommandInteraction) => {
   );
 
   if (newBanList.length === currentQueueRef.banlist.length) {
-    interaction.reply(createBannedMessage(username, 'notBanned'));
+    return interaction.reply(createBannedMessage(username, 'notBanned'));
   }
 
   currentQueueRef.banlist = newBanList;
-  interaction.reply(createBannedMessage(username, 'unban'));
+  return interaction.reply(createBannedMessage(username, 'unban'));
 };
 
 export const unbanMemberResponder = (interaction: CommandInteraction) =>
