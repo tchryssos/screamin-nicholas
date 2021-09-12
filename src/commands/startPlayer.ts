@@ -29,7 +29,7 @@ export const startPlayer = async (
     const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(url);
     if (isPlaylist) {
       currentQueueRef.queue = [];
-      await queuePlaylist(url, interaction, voiceChannel, guild, async () =>
+      await queuePlaylist(url, interaction, async () =>
         playNextTrack(interaction, voiceChannel.id, guild, true)
       );
     } else {

@@ -1,12 +1,17 @@
 import { CommandInteraction } from 'discord.js';
 
-import { DISCORD_INFO_FETCH_ERROR } from '../constants/messages.js';
+import {
+  BANLIST_FETCH_ERROR,
+  createBanlistMessage,
+  DISCORD_INFO_FETCH_ERROR,
+  NO_BANLIST_ERROR,
+} from '../constants/messages.js';
 import { currentQueueRef } from '../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData } from '../typings/validations';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
-const viewBanlist = (
+const viewBanlist = async (
   interaction: CommandInteraction,
   interactionData: InteractionData
 ) => {
@@ -17,7 +22,20 @@ const viewBanlist = (
     throw new Error(DISCORD_INFO_FETCH_ERROR);
   }
 
-  console.log(guild.members);
+  if (!banlist.length) {
+    return interaction.reply(NO_BANLIST_ERROR);
+  }
+
+  try {
+    const guildMembers = await guild.members.fetch({ user: banlist });
+    const membersString = guildMembers.reduce(
+      (string, curMember) => `${string}\n${curMember.user.username}`,
+      ''
+    );
+    return interaction.reply(createBanlistMessage(membersString));
+  } catch {
+    return interaction.reply(BANLIST_FETCH_ERROR);
+  }
 };
 
 export const viewBanlistResponder = (interaction: CommandInteraction) =>

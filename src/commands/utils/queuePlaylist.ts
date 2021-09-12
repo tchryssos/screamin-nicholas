@@ -1,12 +1,10 @@
-import {
-  CommandInteraction,
-  Guild,
-  StageChannel,
-  VoiceChannel,
-} from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import ytpl from 'ytpl';
 
-import { createAddedSongCountToQueueMessage } from '../../constants/messages.js';
+import {
+  createAddedSongCountToQueueMessage,
+  INVALID_PLAYLIST_ERROR,
+} from '../../constants/messages.js';
 import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { VideoMeta } from '../../typings/queue';
@@ -14,8 +12,6 @@ import { VideoMeta } from '../../typings/queue';
 export const queuePlaylist = async (
   url: string,
   interaction: CommandInteraction,
-  voiceChannel: VoiceChannel | StageChannel,
-  guild: Guild,
   callback?: (items?: VideoMeta[]) => void
 ) => {
   const { items } = await ytpl(url);
@@ -30,6 +26,6 @@ export const queuePlaylist = async (
     interaction.reply(createAddedSongCountToQueueMessage(itemsMeta.length));
     callback?.(itemsMeta);
   } else {
-    throw new Error('Please provide a valid playlist.');
+    interaction.reply(INVALID_PLAYLIST_ERROR);
   }
 };

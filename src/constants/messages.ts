@@ -43,6 +43,11 @@ export const CAN_INTERACT_VALIDATION_ERROR = 'You are not allowed to do that';
 export const MENTIONEE_ISNT_MEMBER_ERROR =
   "The user you mentioned isn't part of this Server. Please try again with a Server member";
 export const MENTIONEE_IS_SELF = 'You cannot ban yourself';
+export const NO_BANLIST_ERROR =
+  "No one is currently banned from Screamin' Nicholas";
+export const BANLIST_FETCH_ERROR =
+  "Something went wrong fetching the banlist. This doesn't mean it isn't working, just that it can't currently be displayed";
+export const INVALID_PLAYLIST_ERROR = 'Please provide a valid playlist';
 // END - Validation / Error Messages - END
 
 // START - Audio Status - START
@@ -97,4 +102,7 @@ export const createBannedMessage = (username: string, isNew = true) =>
   `${username} is ${
     isNew ? 'now' : 'already'
   } banned from using Screamin' Nicholas`;
+
+export const createBanlistMessage = (usersString: string) =>
+  `The following members are banned from affecting Screamin' Nicholas playback:\n${usersString}`;
 // END - Functions - END

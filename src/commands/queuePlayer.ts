@@ -46,23 +46,17 @@ export const queuePlayer = async (
     }
     const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(url);
     if (isPlaylist) {
-      await queuePlaylist(
-        url,
-        interaction,
-        voiceChannel,
-        guild,
-        async (metaArray) => {
-          if (!currentQueueRef.current) {
-            await fetchAndPlay(
-              metaArray![0],
-              interaction,
-              voiceChannel.id,
-              guild,
-              true
-            );
-          }
+      await queuePlaylist(url, interaction, async (metaArray) => {
+        if (!currentQueueRef.current) {
+          await fetchAndPlay(
+            metaArray![0],
+            interaction,
+            voiceChannel.id,
+            guild,
+            true
+          );
         }
-      );
+      });
     } else {
       const meta = await fetchMeta(url);
       if (!currentQueueRef.current) {
