@@ -28,6 +28,8 @@ export const VIEW_BANLIST_DESCRIPTION =
 
 export const CLEAR_QUEUE_DESCRIPTION = 'Clear the current audio queue';
 export const SHUFFLE_QUEUE_DESCRIPTION = 'Shuffle the current audio queue';
+export const VOLUME_DESCRIPTION = 'Gets or sets the current volume';
+export const VOLUME_OPTION_DESCRIPTION = 'Volume percentage. Can go above 100%';
 // END - Command Descriptions - END
 
 // START - Validation / Error Messages - START
@@ -51,6 +53,8 @@ export const NO_BANLIST_ERROR =
 export const BANLIST_FETCH_ERROR =
   "Something went wrong fetching the banlist. This doesn't mean it isn't working, just that it can't currently be displayed";
 export const INVALID_PLAYLIST_ERROR = 'Please provide a valid playlist';
+export const NO_AUDIO_RESOURCE_ERROR =
+  'The AudioResource or its volume setting is missing. Try `/play`ing something else';
 // END - Validation / Error Messages - END
 
 // START - Audio Status - START
@@ -69,8 +73,6 @@ export const REGISTER_COMMANDS_SUCCESS =
 // START - Functions - START
 // These are not constants, but it makes more sense to put
 // these string-generating functions here than anywhere else
-
-// Audio Status
 export const createNowPlayingMessage = (title: string) =>
   `Now playing: ${title}`;
 
@@ -128,4 +130,14 @@ export const createBannedMessage = (
 
 export const createBanlistMessage = (usersString: string) =>
   `The following members are banned from affecting Screamin' Nicholas playback:\n${usersString}`;
+
+export const createGetVolumeMessage = (volumeDecimal: number) => {
+  const volumePerc = volumeDecimal * 100;
+  return `Currently playing at ${volumePerc}% volume`;
+};
+
+export const createSetVolumeMessage = (volumeDecimal: number) => {
+  const volumePerc = volumeDecimal * 100;
+  return `Volume now set to ${volumePerc}%`;
+};
 // END - Functions - END

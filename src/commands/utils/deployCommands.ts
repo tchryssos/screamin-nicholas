@@ -16,6 +16,8 @@ import {
   URL_OPTION,
   VIEW_BANLIST,
   VIEW_QUEUE,
+  VOLUME,
+  VOLUME_OPTION,
 } from '../../constants/commands.js';
 import {
   BAN_DESCRIPTION,
@@ -32,6 +34,8 @@ import {
   UNBAN_MEMBER_DESCRIPTION,
   VIEW_BANLIST_DESCRIPTION,
   VIEW_QUEUE_DESCRIPTION,
+  VOLUME_DESCRIPTION,
+  VOLUME_OPTION_DESCRIPTION,
 } from '../../constants/messages.js';
 
 dotenv.config();
@@ -89,6 +93,12 @@ const commands = [
   new SlashCommandBuilder()
     .setName(SHUFFLE_QUEUE)
     .setDescription(SHUFFLE_QUEUE_DESCRIPTION),
+  new SlashCommandBuilder()
+    .setName(VOLUME)
+    .setDescription(VOLUME_DESCRIPTION)
+    .addIntegerOption((option) =>
+      option.setName(VOLUME_OPTION).setDescription(VOLUME_OPTION_DESCRIPTION)
+    ),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);
