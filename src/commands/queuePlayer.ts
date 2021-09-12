@@ -36,10 +36,7 @@ export const queuePlayer = async (
 ) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { voiceChannel, guild } = interactionData;
-  const {
-    options: { getString },
-  } = interaction;
-  const url = getString(URL_OPTION);
+  const url = interaction.options.getString(URL_OPTION);
   try {
     if (!url || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);

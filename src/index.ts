@@ -2,6 +2,7 @@ import { Client, Intents } from 'discord.js';
 import dotenv from 'dotenv';
 
 import { banMemberResponder } from './commands/banMember.js';
+import { clearQueueResponder } from './commands/clearQueue.js';
 import { queuePlayerResponder } from './commands/queuePlayer.js';
 import { skipTrackResponder } from './commands/skipTrack.js';
 import { startPlayerResponder } from './commands/startPlayer.js';
@@ -11,6 +12,7 @@ import { viewBanlistResponder } from './commands/viewBanlist.js';
 import { viewQueueResponder } from './commands/viewQueue.js';
 import {
   BAN,
+  CLEAR_QUEUE,
   PLAY,
   QUEUE,
   SKIP,
@@ -66,6 +68,9 @@ client.on('interactionCreate', async (interaction) => {
         break;
       case VIEW_BANLIST:
         viewBanlistResponder(interaction);
+        break;
+      case CLEAR_QUEUE:
+        clearQueueResponder(interaction);
         break;
     }
   } catch (e) {

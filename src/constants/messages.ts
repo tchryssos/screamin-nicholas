@@ -25,6 +25,8 @@ export const UNBAN_DESCRIPTION =
 export const UNBAN_MEMBER_DESCRIPTION = 'Member to unban';
 export const VIEW_BANLIST_DESCRIPTION =
   "View the current members on the Screamin' Nicholas banlist";
+
+export const CLEAR_QUEUE_DESCRIPTION = 'Clear the current audio queue';
 // END - Command Descriptions - END
 
 // START - Validation / Error Messages - START
@@ -53,6 +55,8 @@ export const INVALID_PLAYLIST_ERROR = 'Please provide a valid playlist';
 // START - Audio Status - START
 export const STOPPING_MESSAGE =
   'Stopping the currently playing audio and clearing the queue';
+
+export const CLEAR_QUEUE_MESSAGE = 'The queue has been cleared';
 // END - Audio Status - END
 
 // START - Misc - START

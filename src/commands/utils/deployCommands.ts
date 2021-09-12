@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 import {
   BAN,
+  CLEAR_QUEUE,
   MEMBER_OPTION,
   PLAY,
   QUEUE,
@@ -18,6 +19,7 @@ import {
 import {
   BAN_DESCRIPTION,
   BAN_MEMBER_DESCRIPTION,
+  CLEAR_QUEUE_DESCRIPTION,
   PLAY_DESCRIPTION,
   PLAY_URL_DESCRIPTION,
   QUEUE_DESCRIPTION,
@@ -79,6 +81,9 @@ const commands = [
   new SlashCommandBuilder()
     .setName(VIEW_BANLIST)
     .setDescription(VIEW_BANLIST_DESCRIPTION),
+  new SlashCommandBuilder()
+    .setName(CLEAR_QUEUE)
+    .setDescription(CLEAR_QUEUE_DESCRIPTION),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);
@@ -88,6 +93,7 @@ const rest = new REST({ version: '9' }).setToken(token!);
     process.env.GUILD_ID,
     process.env.ANTHONY_GUILD_ID,
     process.env.TDB_GUILD_ID,
+    process.env.QPG_GUILD_ID,
   ];
   try {
     guildIds.forEach(async (id) => {
