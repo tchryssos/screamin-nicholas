@@ -27,6 +27,7 @@ export const VIEW_BANLIST_DESCRIPTION =
   "View the current members on the Screamin' Nicholas banlist";
 
 export const CLEAR_QUEUE_DESCRIPTION = 'Clear the current audio queue';
+export const SHUFFLE_QUEUE_DESCRIPTION = 'Shuffle the current audio queue';
 // END - Command Descriptions - END
 
 // START - Validation / Error Messages - START
@@ -57,6 +58,7 @@ export const STOPPING_MESSAGE =
   'Stopping the currently playing audio and clearing the queue';
 
 export const CLEAR_QUEUE_MESSAGE = 'The queue has been cleared';
+export const SHUFFLE_QUEUE_MESSAGE = 'The queue has been shuffled.';
 // END - Audio Status - END
 
 // START - Misc - START

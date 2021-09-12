@@ -9,6 +9,7 @@ import {
   MEMBER_OPTION,
   PLAY,
   QUEUE,
+  SHUFFLE_QUEUE,
   SKIP,
   STOP,
   UNBAN,
@@ -25,6 +26,7 @@ import {
   QUEUE_DESCRIPTION,
   QUEUE_URL_DESCRIPTION,
   REGISTER_COMMANDS_SUCCESS,
+  SHUFFLE_QUEUE_DESCRIPTION,
   SKIP_DESCRIPTION,
   STOP_DESCRIPTION,
   UNBAN_MEMBER_DESCRIPTION,
@@ -84,6 +86,9 @@ const commands = [
   new SlashCommandBuilder()
     .setName(CLEAR_QUEUE)
     .setDescription(CLEAR_QUEUE_DESCRIPTION),
+  new SlashCommandBuilder()
+    .setName(SHUFFLE_QUEUE)
+    .setDescription(SHUFFLE_QUEUE_DESCRIPTION),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(token!);

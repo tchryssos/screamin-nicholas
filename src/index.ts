@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { banMemberResponder } from './commands/banMember.js';
 import { clearQueueResponder } from './commands/clearQueue.js';
 import { queuePlayerResponder } from './commands/queuePlayer.js';
+import { shuffleQueueResponder } from './commands/shuffleQueue.js';
 import { skipTrackResponder } from './commands/skipTrack.js';
 import { startPlayerResponder } from './commands/startPlayer.js';
 import { stopPlayerResponder } from './commands/stopPlayer.js';
@@ -15,6 +16,7 @@ import {
   CLEAR_QUEUE,
   PLAY,
   QUEUE,
+  SHUFFLE_QUEUE,
   SKIP,
   STOP,
   UNBAN,
@@ -71,6 +73,9 @@ client.on('interactionCreate', async (interaction) => {
         break;
       case CLEAR_QUEUE:
         clearQueueResponder(interaction);
+        break;
+      case SHUFFLE_QUEUE:
+        shuffleQueueResponder(interaction);
         break;
     }
   } catch (e) {
