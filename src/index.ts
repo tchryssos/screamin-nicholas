@@ -37,10 +37,9 @@ client.once('ready', () => {
 
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isCommand()) return;
+  const { commandName } = interaction;
 
   try {
-    const { commandName } = interaction;
-
     switch (commandName) {
       case PLAY:
         startPlayerResponder(interaction);
@@ -64,8 +63,11 @@ client.on('interactionCreate', async (interaction) => {
         unbanMemberResponder(interaction);
         break;
     }
-  } catch {
-    interaction.channel?.send(GENERAL_ERROR_MESSAGE);
+  } catch (e) {
+    const message = (e as Error).message || GENERAL_ERROR_MESSAGE;
+    interaction.channel?.send(
+      `Something went wrong running \`/${commandName}\`: ${message}`
+    );
   }
 });
 

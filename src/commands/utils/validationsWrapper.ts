@@ -10,7 +10,6 @@ import {
   QUEUE_VALIDATION_ERROR,
   SERVER_VALIDATION_ERROR,
   SHOULD_BE_PLAYING_VALIDATION_ERROR,
-  URL_VALIDATION_ERROR,
   VOICE_CHANNEL_VALIDATION_ERROR,
 } from '../../constants/messages.js';
 import { currentQueueRef } from '../../state/queue.js';
@@ -29,12 +28,11 @@ export const validationsWrapper = (
     shouldBeInServer = { validate: true },
     shouldBeInVoice,
     shouldHaveQueue,
-    shouldHaveUrl,
     shouldBePlaying,
     isAllowedToInteract = { validate: true },
   } = validationObj;
   // Run a bunch of checks to make sure that the command can be run successfully...
-  const { options, guildId, client } = interaction;
+  const { guildId, client } = interaction;
   let guild: Guild | null = null;
   let voiceChannel: VoiceChannel | StageChannel | null = null;
 
@@ -59,10 +57,6 @@ export const validationsWrapper = (
       );
     }
   }
-  const url = options.getString('url');
-  if (!url && shouldHaveUrl?.validate) {
-    return interaction.reply(shouldHaveUrl.customError || URL_VALIDATION_ERROR);
-  }
 
   if (!currentQueueRef.current && shouldBePlaying?.validate) {
     interaction.reply(
@@ -76,5 +70,5 @@ export const validationsWrapper = (
     interaction.reply(shouldHaveQueue.customError || QUEUE_VALIDATION_ERROR);
   }
 
-  return callback(interaction, { url, guild, voiceChannel });
+  return callback(interaction, { guild, voiceChannel });
 };

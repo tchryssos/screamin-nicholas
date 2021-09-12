@@ -5,11 +5,13 @@ import dotenv from 'dotenv';
 
 import {
   BAN,
+  MEMBER_OPTION,
   PLAY,
   QUEUE,
   SKIP,
   STOP,
   UNBAN,
+  URL_OPTION,
   VIEW_QUEUE,
 } from '../../constants/commands.js';
 import {
@@ -36,7 +38,7 @@ const commands = [
     .setDescription(PLAY_DESCRIPTION)
     .addStringOption((option) =>
       option
-        .setName('url')
+        .setName(URL_OPTION)
         .setDescription(PLAY_URL_DESCRIPTION)
         .setRequired(true)
     ),
@@ -46,7 +48,7 @@ const commands = [
     .setDescription(QUEUE_DESCRIPTION)
     .addStringOption((option) =>
       option
-        .setName('url')
+        .setName(URL_OPTION)
         .setDescription(QUEUE_URL_DESCRIPTION)
         .setRequired(true)
     ),
@@ -59,7 +61,7 @@ const commands = [
     .setDescription(BAN_DESCRIPTION)
     .addMentionableOption((option) =>
       option
-        .setName('member')
+        .setName(MEMBER_OPTION)
         .setDescription(BAN_MEMBER_DESCRIPTION)
         .setRequired(true)
     ),
@@ -68,7 +70,7 @@ const commands = [
     .setDescription(UNBAN_MEMBER_DESCRIPTION)
     .addMentionableOption((option) =>
       option
-        .setName('member')
+        .setName(MEMBER_OPTION)
         .setDescription(UNBAN_MEMBER_DESCRIPTION)
         .setRequired(true)
     ),

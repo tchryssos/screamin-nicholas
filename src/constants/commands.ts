@@ -5,3 +5,6 @@ export const VIEW_QUEUE = 'view_queue';
 export const SKIP = 'skip';
 export const BAN = 'ban';
 export const UNBAN = 'unban';
+
+export const URL_OPTION = 'url';
+export const MEMBER_OPTION = 'member';

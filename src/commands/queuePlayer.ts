@@ -1,5 +1,6 @@
 import { CommandInteraction, Guild } from 'discord.js';
 
+import { URL_OPTION } from '../constants/commands.js';
 import {
   createAddedSongToQueueMessage,
   DISCORD_INFO_FETCH_ERROR,
@@ -34,7 +35,11 @@ export const queuePlayer = async (
   interactionData: InteractionData
 ) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
-  const { url, voiceChannel, guild } = interactionData;
+  const { voiceChannel, guild } = interactionData;
+  const {
+    options: { getString },
+  } = interaction;
+  const url = getString(URL_OPTION);
   try {
     if (!url || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);
@@ -81,6 +86,6 @@ export const queuePlayer = async (
 export const queuePlayerResponder = (interaction: CommandInteraction) =>
   validationsWrapper(
     interaction,
-    { shouldBeInVoice: { validate: true }, shouldHaveUrl: { validate: true } },
+    { shouldBeInVoice: { validate: true } },
     queuePlayer
   );

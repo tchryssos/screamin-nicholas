@@ -38,6 +38,9 @@ export const SHOULD_BE_PLAYING_VALIDATION_ERROR =
   'Nothing is currently playing';
 export const GENERAL_ERROR_MESSAGE = 'Something went wrong';
 export const CAN_INTERACT_VALIDATION_ERROR = 'You are not allowed to do that';
+export const MENTIONEE_ISNT_MEMBER_ERROR =
+  "The user you mentioned isn't part of this Server. Please try again with a Server member";
+export const MENTIONEE_IS_SELF = 'You cannot ban yourself';
 // END - Validation / Error Messages - END
 
 // START - Audio Status - START
@@ -52,7 +55,7 @@ export const REGISTER_COMMANDS_SUCCESS =
 
 // START - Functions - START
 // These are not constants, but it makes more sense to put
-// these functions here than anywhere else
+// these string-generating functions here than anywhere else
 
 // Audio Status
 export const createNowPlayingMessage = (title: string) =>
@@ -87,4 +90,7 @@ export const createViewQueueMessage = (queue: VideoMeta[]) => {
     queue.length
   } songs in the queue.`;
 };
+
+export const createBannedMessage = (username: string, isNew = true) =>
+  `${username} is ${isNew ? 'now' : 'already'} banned`;
 // END - Functions - END

@@ -1,5 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 
+import { URL_OPTION } from '../constants/commands.js';
 import { DISCORD_INFO_FETCH_ERROR } from '../constants/messages.js';
 import { YOUTUBE_PLAYLIST_REGEX } from '../constants/regex.js';
 import { currentQueueRef } from '../state/queue.js';
@@ -15,7 +16,11 @@ export const startPlayer = async (
   interaction: CommandInteraction,
   interactionData: InteractionData
 ) => {
-  const { url, voiceChannel, guild } = interactionData;
+  const { voiceChannel, guild } = interactionData;
+  const {
+    options: { getString },
+  } = interaction;
+  const url = getString(URL_OPTION);
   try {
     if (!url || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);
@@ -48,7 +53,6 @@ export const startPlayerResponder = (interaction: CommandInteraction) =>
     interaction,
     {
       shouldBeInVoice: { validate: true },
-      shouldHaveUrl: { validate: true },
     },
     startPlayer
   );
