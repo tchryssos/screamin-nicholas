@@ -8,7 +8,7 @@ const stopPlayer = (interaction: CommandInteraction) => {
   const { player } = currentQueueRef;
   player!.pause();
   interaction.reply(STOPPING_MESSAGE);
-  currentQueueRef.current = null;
+  currentQueueRef.current = {};
   currentQueueRef.queue = [];
 };
 

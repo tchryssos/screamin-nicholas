@@ -15,7 +15,5 @@ Screamin' Nicholas uses Node 16 and typescript. You can use `npm start` to spin 
 ### TODOs
 
 - Search by title or by Spotify url
-- Add /shuffle command to shuffle the queue
 - Add /gamble command (maybe once title search works) that will search Youtube and pull something "random"
-- Add /clear_queue command to leave current audio playing but remove the queue
 - Add volume change commands

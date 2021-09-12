@@ -29,7 +29,10 @@ export const playAudio = (
 
   const resource = createAudioResource(stream, {
     inputType: StreamType.Arbitrary,
+    inlineVolume: true,
   });
+
+  currentQueueRef.current.resource = resource;
 
   // Join voice channel
   const connection = joinVoiceChannel({
@@ -48,7 +51,7 @@ export const playAudio = (
     we need to send a normal message to a channel
   */
   const nowPlayingMessage = createNowPlayingMessage(
-    currentQueueRef.current?.meta.title || ''
+    currentQueueRef.current.meta?.title || ''
   );
   if (alreadyRepliedToInteraction) {
     interaction.channel?.send(nowPlayingMessage);
@@ -63,7 +66,7 @@ export const playAudio = (
       } else {
         connection.destroy();
         currentQueueRef.player = null;
-        currentQueueRef.current = null;
+        currentQueueRef.current = {};
       }
     });
   }

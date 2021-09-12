@@ -2,7 +2,7 @@
 import { CurrentQueueRef } from '../typings/queue';
 
 export const currentQueueRef: CurrentQueueRef = {
-  current: null,
+  current: {},
   player: null,
   queue: [],
   banlist: [],

@@ -4,6 +4,7 @@ import {
   StageChannel,
   VoiceChannel,
 } from 'discord.js';
+import isEmpty from 'lodash.isempty';
 
 import {
   CAN_INTERACT_VALIDATION_ERROR,
@@ -58,7 +59,7 @@ export const validationsWrapper = (
     }
   }
 
-  if (!currentQueueRef.current && shouldBePlaying?.validate) {
+  if (!isEmpty(currentQueueRef.current) && shouldBePlaying?.validate) {
     interaction.reply(
       shouldBePlaying.customError || SHOULD_BE_PLAYING_VALIDATION_ERROR
     );
