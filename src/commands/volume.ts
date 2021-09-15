@@ -14,7 +14,7 @@ const volume = (interaction: CommandInteraction) => {
   if (!audioResource || !audioResource.volume) {
     throw new Error(NO_AUDIO_RESOURCE_ERROR);
   }
-  const volumePerc = interaction.options.getNumber(VOLUME_OPTION);
+  const volumePerc = interaction.options.getInteger(VOLUME_OPTION);
   if (!volumePerc) {
     return interaction.reply(
       createGetVolumeMessage(audioResource.volume.volume)

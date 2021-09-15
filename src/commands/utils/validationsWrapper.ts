@@ -59,7 +59,7 @@ export const validationsWrapper = (
     }
   }
 
-  if (!isEmpty(currentQueueRef.current) && shouldBePlaying?.validate) {
+  if (isEmpty(currentQueueRef.current) && shouldBePlaying?.validate) {
     interaction.reply(
       shouldBePlaying.customError || SHOULD_BE_PLAYING_VALIDATION_ERROR
     );
