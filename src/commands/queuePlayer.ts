@@ -45,7 +45,7 @@ export const queuePlayer = async (
     const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(url);
     if (isPlaylist) {
       await queuePlaylist(url, interaction, async (metaArray) => {
-        if (!isEmpty(currentQueueRef.current)) {
+        if (isEmpty(currentQueueRef.current)) {
           await fetchAndPlay(
             metaArray![0],
             interaction,
@@ -57,7 +57,7 @@ export const queuePlayer = async (
       });
     } else {
       const meta = await fetchMeta(url);
-      if (!isEmpty(currentQueueRef.current)) {
+      if (isEmpty(currentQueueRef.current)) {
         await fetchAndPlay(meta, interaction, voiceChannel.id, guild, false);
       } else {
         currentQueueRef.queue.push(meta);

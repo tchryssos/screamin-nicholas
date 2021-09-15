@@ -60,7 +60,7 @@ export const validationsWrapper = (
   }
 
   if (isEmpty(currentQueueRef.current) && shouldBePlaying?.validate) {
-    interaction.reply(
+    return interaction.reply(
       shouldBePlaying.customError || SHOULD_BE_PLAYING_VALIDATION_ERROR
     );
   }
@@ -68,7 +68,9 @@ export const validationsWrapper = (
   const queueLength = currentQueueRef.queue.length;
 
   if (!queueLength && shouldHaveQueue?.validate) {
-    interaction.reply(shouldHaveQueue.customError || QUEUE_VALIDATION_ERROR);
+    return interaction.reply(
+      shouldHaveQueue.customError || QUEUE_VALIDATION_ERROR
+    );
   }
 
   return callback(interaction, { guild, voiceChannel });
