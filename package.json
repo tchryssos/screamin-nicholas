@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "A discord bot that can play audio from Youtube in your voice channels",
   "type": "module",
+  "nodeVersion": "16.6.0",
   "scripts": {
-    "build": "rm -rf dist && npx tsc",
-    "start": "npm run build && node dist/index.js",
+    "build": "rm -rf dist && npx tsc && cp package.json package-lock.json .env dist",
+    "start:build": "npm run build && node dist/index.js",
+    "start": "node index.js",
     "deployCommands": "npm run build && node dist/commands/utils/deployCommands.js"
   },
   "author": "",
@@ -39,6 +41,7 @@
     "libsodium-wrappers": "^0.7.9",
     "lodash.isempty": "^4.4.0",
     "lodash.shuffle": "^4.2.0",
+    "opusscript": "^0.0.8",
     "ytdl-core": "^4.9.1",
     "ytpl": "^2.2.3"
   },
