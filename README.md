@@ -6,7 +6,7 @@ Use [this link](https://discord.com/api/oauth2/authorize?client_id=8806285733696
 
 ### Development
 
-Screamin' Nicholas uses Node 16 and typescript. You can use `npm start` to spin Nick up locally, or use `npm run build` to create a build (that gets put into the `dist` folder) and upload it to a server.
+Screamin' Nicholas uses Node 16 and typescript. You can use `npm run dev` to spin Nick up locally, or use `npm run build` to create a build (that gets put into the `dist` folder) and upload it to a server. The `npm start` command is intended to be run by the server, so it won't work locally.
 
 ### Updating Commands
 

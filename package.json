@@ -6,7 +6,7 @@
   "nodeVersion": "16.6.0",
   "scripts": {
     "build": "rm -rf dist && npx tsc && cp package.json package-lock.json .env dist",
-    "start:build": "npm run build && node dist/index.js",
+    "dev": "npm run build && node dist/index.js",
     "start": "node index.js",
     "deployCommands": "npm run build && node dist/commands/utils/deployCommands.js"
   },
