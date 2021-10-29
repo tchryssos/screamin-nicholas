@@ -8,6 +8,7 @@ export type VideoMeta = {
   author: string;
   lengthSeconds: string;
   url: string;
+  needsSearch?: boolean;
 };
 
 export type CurrentQueueRef = {

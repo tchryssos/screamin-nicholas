@@ -29,18 +29,58 @@ spotifyApi.clientCredentialsGrant().then((data) => {
     console.warn('Something went wrong trying to set the Spotify access token');
   }
 });
+// END - SPOTIFY CONFIG - END
 
-const testPlaylist = async () => {
-  try {
-    const resp = await spotifyApi.getPlaylist(
-      '7GQ0qcoHvGOqbKHVw73q4y?si=108bcf85426c4c07'
-    );
-    console.log(resp.body.tracks.items);
-  } catch (e) {
-    console.log('SPOTIFY ERROR: ', JSON.stringify(e));
+const buildSpotifyVideoMeta = (
+  track:
+    | SpotifyApi.PlaylistTrackObject['track']
+    | SpotifyApi.SingleTrackResponse
+): VideoMeta => {
+  const { duration_ms, name, artists } = track;
+  const lengthSeconds = String(duration_ms * 1000);
+  const author = artists.reduce((acc, currArtist, i) => {
+    if (i === 0) {
+      return currArtist.name;
+    }
+    return `${acc}, ${currArtist.name}`;
+  }, '');
+  return {
+    author,
+    lengthSeconds,
+    title: name,
+    needsSearch: true,
+    url: '',
+  };
+};
+
+const fetchSpotifyMeta = async (spotifyUrl: string) => {
+  if (checkIfSpotifyOkay()) {
+    const urlChunks = spotifyUrl.split('/');
+    const playlistIndex = urlChunks.indexOf('playlist');
+    if (playlistIndex !== -1) {
+      const id = urlChunks[playlistIndex + 1];
+      const { body, statusCode } = await spotifyApi.getPlaylist(id);
+      if (statusCode !== 200) {
+        throw new Error('Something went wrong fetching your playlist');
+      }
+      return body.tracks.items.map(({ track }) => buildSpotifyVideoMeta(track));
+    } else {
+      const trackIndex = urlChunks.indexOf('track');
+      if (trackIndex !== -1) {
+        const id = urlChunks[trackIndex + 1];
+        const { body, statusCode } = await spotifyApi.getTrack(id);
+        if (statusCode !== 200) {
+          throw new Error('Something went wrong fetching your track');
+        }
+        return buildSpotifyVideoMeta(body);
+      } else {
+        throw new Error('Try requesting with a playlist or track url');
+      }
+    }
+  } else {
+    throw new Error('Something went wrong connecting to Spotify');
   }
 };
-// END - SPOTIFY CONFIG - END
 
 export const fetchStream = async (youtubeUrl: string) =>
   ytdl(youtubeUrl, {
@@ -104,26 +144,25 @@ export const tryFetchStream = async (
   let stream: ReturnType<typeof ytdl>;
   let url: string;
   let meta: VideoMeta | undefined;
-  await testPlaylist();
   if (ytdl.validateURL(searchText)) {
     stream = await fetchStream(searchText);
     url = searchText;
     meta = undefined;
-  }
-  // else if (searchText.includes('spotify') && checkIfSpotifyOkay()) {
-  //   try {
-  //     const playlist = await spotifyApi.getPlaylist(
-  //       'https://open.spotify.com/playlist/7GQ0qcoHvGOqbKHVw73q4y?si=172749d34d0c4769'
-  //     );
-  //     console.log('spotify: ', JSON.stringify(playlist));
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   url = '';
-  //   stream = {} as YTDLStream;
-  //   meta = {} as VideoMeta;
-  // }
-  else {
+  } else if (searchText.includes('spotify')) {
+    const spotifyMetaArrayOrObj = await fetchSpotifyMeta(searchText);
+    if (Array.isArray(spotifyMetaArrayOrObj)) {
+      url = '';
+      stream = {} as YTDLStream;
+      meta = {} as VideoMeta;
+    } else {
+      const { author, title } = spotifyMetaArrayOrObj;
+      const { stream: searchedStream, meta: searchedMeta } =
+        await fetchYoutubeTopResultStream(`${title} by ${author}`);
+      url = searchedMeta.url;
+      stream = searchedStream;
+      meta = searchedMeta;
+    }
+  } else {
     const { stream: searchedStream, meta: searchedMeta } =
       await fetchYoutubeTopResultStream(searchText);
     url = searchedMeta.url;
