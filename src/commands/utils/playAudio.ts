@@ -56,7 +56,7 @@ export const playAudio = (
   if (alreadyRepliedToInteraction) {
     interaction.channel?.send(nowPlayingMessage);
   } else {
-    interaction.reply(nowPlayingMessage);
+    interaction.editReply(nowPlayingMessage);
   }
 
   if (!initialPlayer) {

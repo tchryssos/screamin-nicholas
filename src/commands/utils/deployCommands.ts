@@ -8,12 +8,12 @@ import {
   CLEAR_QUEUE,
   MEMBER_OPTION,
   PLAY,
+  QUERY_OPTION,
   QUEUE,
   SHUFFLE_QUEUE,
   SKIP,
   STOP,
   UNBAN,
-  URL_OPTION,
   VIEW_BANLIST,
   VIEW_QUEUE,
   VOLUME,
@@ -48,7 +48,7 @@ const commands = [
     .setDescription(PLAY_DESCRIPTION)
     .addStringOption((option) =>
       option
-        .setName(URL_OPTION)
+        .setName(QUERY_OPTION)
         .setDescription(PLAY_URL_DESCRIPTION)
         .setRequired(true)
     ),
@@ -58,7 +58,7 @@ const commands = [
     .setDescription(QUEUE_DESCRIPTION)
     .addStringOption((option) =>
       option
-        .setName(URL_OPTION)
+        .setName(QUERY_OPTION)
         .setDescription(QUEUE_URL_DESCRIPTION)
         .setRequired(true)
     ),

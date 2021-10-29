@@ -10,6 +10,6 @@ export const BAN = 'ban';
 export const UNBAN = 'unban';
 export const VIEW_BANLIST = 'view_banlist';
 
-export const URL_OPTION = 'url';
+export const QUERY_OPTION = 'query';
 export const MEMBER_OPTION = 'member';
 export const VOLUME_OPTION = 'volume_percentage';
