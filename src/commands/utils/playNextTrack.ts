@@ -1,7 +1,8 @@
 import { CommandInteraction, Guild } from 'discord.js';
 
 import { currentQueueRef } from '../../state/queue.js';
-import { fetchStream } from './fetchAudioData.js';
+import { YTDLStream } from '../../typings/queue.js';
+import { fetchStream, tryFetchStream } from './fetchAudioData.js';
 import { playAudio } from './playAudio.js';
 
 export const playNextTrack = async (
@@ -9,13 +10,19 @@ export const playNextTrack = async (
   voiceChannelId: string,
   guild: Guild
 ) => {
-  // if (!interaction.replied) {
-  //   interaction.deferReply();
-  // }
   const nextMeta = currentQueueRef.queue.shift()!;
-  const stream = await fetchStream(nextMeta.url);
+  let stream: YTDLStream;
+  if (nextMeta.needsSearch) {
+    const { stream: fetchedStream } = await tryFetchStream(
+      `${nextMeta.title} by ${nextMeta.author}`,
+      interaction
+    );
+    stream = fetchedStream;
+  } else {
+    stream = await fetchStream(nextMeta.url);
+  }
   currentQueueRef.current = {
-    meta: nextMeta,
+    meta: { ...nextMeta, needsSearch: false },
     stream,
   };
   playAudio(interaction, stream, voiceChannelId, guild);

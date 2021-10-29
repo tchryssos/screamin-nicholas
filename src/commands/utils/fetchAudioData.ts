@@ -4,15 +4,19 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import ytdl from 'ytdl-core';
 import ytsr, { Video } from 'ytsr';
 
+import { createAddedSongCountToQueueMessage } from '../../constants/messages.js';
+import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { VideoMeta, YTDLStream } from '../../typings/queue';
 import { durationToSeconds } from '../../utils/durationToSeconds.js';
+import { reply } from './reply.js';
 
 dotenv.config();
+
+// START - SPOTIFY CONFIG - START
 let spotifyOk = false;
 const checkIfSpotifyOkay = () => spotifyOk;
 
-// START - SPOTIFY CONFIG - START
 // https://github.com/thelinmichael/spotify-web-api-node#client-credential-flow
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -31,6 +35,7 @@ spotifyApi.clientCredentialsGrant().then((data) => {
 });
 // END - SPOTIFY CONFIG - END
 
+// START - SPOTIFY FETCH - START
 const buildSpotifyVideoMeta = (
   track:
     | SpotifyApi.PlaylistTrackObject['track']
@@ -81,7 +86,9 @@ const fetchSpotifyMeta = async (spotifyUrl: string) => {
     throw new Error('Something went wrong connecting to Spotify');
   }
 };
+// END - SPOTIFY FETCH - END
 
+// START - YOUTUBE STREAM FETCH - START
 export const fetchStream = async (youtubeUrl: string) =>
   ytdl(youtubeUrl, {
     filter: 'audioonly',
@@ -91,7 +98,9 @@ export const fetchStream = async (youtubeUrl: string) =>
     // This prevents stream errors after 3-4 songs of listening
     highWaterMark: 1 << 25,
   });
+// END - YOUTUBE STREAM FETCH - END
 
+// START - YOUTUBE META FETCH - START
 export const fetchYoutubeMeta = async (
   youtubeUrl: string
 ): Promise<VideoMeta> => {
@@ -104,7 +113,9 @@ export const fetchYoutubeMeta = async (
   } = await ytdl.getBasicInfo(youtubeUrl);
   return { title, author: name, lengthSeconds, url: youtubeUrl };
 };
+// END - YOUTUBE META FETCH - END
 
+// START - YOUTUBE SEARCH - START
 export const fetchYoutubeSearchTopResultMeta = async (
   searchText: string
 ): Promise<VideoMeta> => {
@@ -135,6 +146,7 @@ export const fetchYoutubeTopResultStream = async (
   const stream = await fetchStream(meta!.url);
   return { stream, meta: meta! };
 };
+// END - YOUTUBE SEARCH - END
 
 export const tryFetchStream = async (
   searchText: string,
@@ -144,25 +156,34 @@ export const tryFetchStream = async (
   let stream: ReturnType<typeof ytdl>;
   let url: string;
   let meta: VideoMeta | undefined;
+
+  // If is Youtube URL
   if (ytdl.validateURL(searchText)) {
     stream = await fetchStream(searchText);
     url = searchText;
     meta = undefined;
   } else if (searchText.includes('spotify')) {
+    // If is Spotify URL
     const spotifyMetaArrayOrObj = await fetchSpotifyMeta(searchText);
+    let primaryMeta: VideoMeta;
     if (Array.isArray(spotifyMetaArrayOrObj)) {
-      url = '';
-      stream = {} as YTDLStream;
-      meta = {} as VideoMeta;
+      if (spotifyMetaArrayOrObj.length > 1) {
+        const queue = spotifyMetaArrayOrObj.slice(1);
+        currentQueueRef.queue = queue;
+        reply(createAddedSongCountToQueueMessage(queue.length), interaction);
+      }
+      primaryMeta = spotifyMetaArrayOrObj[0];
     } else {
-      const { author, title } = spotifyMetaArrayOrObj;
-      const { stream: searchedStream, meta: searchedMeta } =
-        await fetchYoutubeTopResultStream(`${title} by ${author}`);
-      url = searchedMeta.url;
-      stream = searchedStream;
-      meta = searchedMeta;
+      primaryMeta = spotifyMetaArrayOrObj;
     }
+    const { author, title } = primaryMeta;
+    const { stream: searchedStream, meta: searchedMeta } =
+      await fetchYoutubeTopResultStream(`${title} by ${author}`);
+    url = searchedMeta.url;
+    stream = searchedStream;
+    meta = searchedMeta;
   } else {
+    // Else, Search Youtube
     const { stream: searchedStream, meta: searchedMeta } =
       await fetchYoutubeTopResultStream(searchText);
     url = searchedMeta.url;
