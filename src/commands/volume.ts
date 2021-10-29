@@ -7,6 +7,7 @@ import {
   NO_AUDIO_RESOURCE_ERROR,
 } from '../constants/messages.js';
 import { currentQueueRef } from '../state/queue.js';
+import { reply } from './utils/reply.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
 const volume = async (interaction: CommandInteraction) => {
@@ -16,14 +17,16 @@ const volume = async (interaction: CommandInteraction) => {
   }
   const volumePerc = interaction.options.getInteger(VOLUME_OPTION);
   if (!volumePerc) {
-    return await interaction.reply(
-      createGetVolumeMessage(audioResource.volume.volume)
+    return await reply(
+      createGetVolumeMessage(audioResource.volume.volume),
+      interaction
     );
   }
 
   audioResource.volume?.setVolume(volumePerc / 100);
-  return await interaction.reply(
-    createSetVolumeMessage(audioResource.volume.volume)
+  return await reply(
+    createSetVolumeMessage(audioResource.volume.volume),
+    interaction
   );
 };
 

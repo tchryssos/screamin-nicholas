@@ -19,6 +19,7 @@ import {
 } from './utils/fetchAudioData.js';
 import { playAudio } from './utils/playAudio.js';
 import { queuePlaylist } from './utils/queuePlaylist.js';
+import { reply } from './utils/reply.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
 const fetchAndPlay = async (
@@ -61,6 +62,7 @@ export const queuePlayer = async (
       });
     } else {
       let meta: VideoMeta;
+      interaction.deferReply();
       if (ytdl.validateURL(query)) {
         meta = await fetchYoutubeMeta(query);
       } else {
@@ -70,17 +72,18 @@ export const queuePlayer = async (
         await fetchAndPlay(meta, interaction, voiceChannel.id, guild);
       } else {
         currentQueueRef.queue.push(meta);
-        await interaction.reply(
+        await reply(
           createAddedSongToQueueMessage(
             meta.title,
             currentQueueRef.queue.length
-          )
+          ),
+          interaction
         );
       }
     }
   } catch (e) {
     const { message } = e as Error;
-    await interaction.reply(message);
+    await reply(message, interaction);
   }
 };
 

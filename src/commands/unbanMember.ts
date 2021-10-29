@@ -7,6 +7,7 @@ import {
   MENTIONEE_ISNT_MEMBER_ERROR,
 } from '../constants/messages.js';
 import { currentQueueRef } from '../state/queue.js';
+import { reply } from './utils/reply.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
 export const unbanMember = async (interaction: CommandInteraction) => {
@@ -18,7 +19,7 @@ export const unbanMember = async (interaction: CommandInteraction) => {
   }
 
   if (!(mentionee instanceof GuildMember)) {
-    return await interaction.reply(MENTIONEE_ISNT_MEMBER_ERROR);
+    return await reply(MENTIONEE_ISNT_MEMBER_ERROR, interaction);
   }
 
   const {
@@ -30,11 +31,11 @@ export const unbanMember = async (interaction: CommandInteraction) => {
   );
 
   if (newBanList.length === currentQueueRef.banlist.length) {
-    return await interaction.reply(createBannedMessage(username, 'notBanned'));
+    return await reply(createBannedMessage(username, 'notBanned'), interaction);
   }
 
   currentQueueRef.banlist = newBanList;
-  return await interaction.reply(createBannedMessage(username, 'unban'));
+  return await reply(createBannedMessage(username, 'unban'), interaction);
 };
 
 export const unbanMemberResponder = (interaction: CommandInteraction) =>

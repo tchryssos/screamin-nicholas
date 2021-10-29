@@ -8,6 +8,7 @@ import {
 import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { VideoMeta } from '../../typings/queue';
+import { reply } from './reply.js';
 
 export const queuePlaylist = async (
   url: string,
@@ -24,11 +25,12 @@ export const queuePlaylist = async (
       url: i.url,
     }));
     currentQueueRef.queue = [...currentQueueRef.queue, ...itemsMeta];
-    await interaction.reply(
-      createAddedSongCountToQueueMessage(itemsMeta.length)
+    await reply(
+      createAddedSongCountToQueueMessage(itemsMeta.length),
+      interaction
     );
     callback?.(itemsMeta);
   } else {
-    await interaction.reply(INVALID_PLAYLIST_ERROR);
+    await reply(INVALID_PLAYLIST_ERROR, interaction);
   }
 };

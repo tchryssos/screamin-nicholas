@@ -13,6 +13,7 @@ import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { YTDLStream } from '../../typings/queue';
 import { playNextTrack } from './playNextTrack.js';
+import { reply } from './reply.js';
 
 export const playAudio = async (
   interaction: CommandInteraction,
@@ -53,11 +54,8 @@ export const playAudio = async (
   const nowPlayingMessage = createNowPlayingMessage(
     currentQueueRef.current.meta?.title || ''
   );
-  if (interaction.replied) {
-    interaction.channel?.send(nowPlayingMessage);
-  } else {
-    await interaction.reply(nowPlayingMessage);
-  }
+
+  await reply(nowPlayingMessage, interaction);
 
   if (!initialPlayer) {
     player.on(AudioPlayerStatus.Idle, async () => {

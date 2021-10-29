@@ -9,6 +9,7 @@ import {
 import { currentQueueRef } from '../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData } from '../typings/validations';
+import { reply } from './utils/reply.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
 const viewBanlist = async (
@@ -23,7 +24,7 @@ const viewBanlist = async (
   }
 
   if (!banlist.length) {
-    return await interaction.reply(NO_BANLIST_ERROR);
+    return await reply(NO_BANLIST_ERROR, interaction);
   }
 
   try {
@@ -32,9 +33,9 @@ const viewBanlist = async (
       (string, curMember) => `${string}\n${curMember.user.username}`,
       ''
     );
-    return await interaction.reply(createBanlistMessage(membersString));
+    return await reply(createBanlistMessage(membersString), interaction);
   } catch {
-    return await interaction.reply(BANLIST_FETCH_ERROR);
+    return await reply(BANLIST_FETCH_ERROR, interaction);
   }
 };
 

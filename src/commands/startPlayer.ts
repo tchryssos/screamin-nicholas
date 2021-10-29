@@ -9,6 +9,7 @@ import { fetchYoutubeMeta, tryFetchStream } from './utils/fetchAudioData.js';
 import { playAudio } from './utils/playAudio.js';
 import { playNextTrack } from './utils/playNextTrack.js';
 import { queuePlaylist } from './utils/queuePlaylist.js';
+import { reply } from './utils/reply.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
 // This function (and its utils) adapted from https://discordjs.guide/popular-topics/faq.html#how-do-i-play-music-from-youtube
@@ -48,7 +49,7 @@ export const startPlayer = async (
     }
   } catch (e) {
     const { message } = e as Error;
-    await interaction.reply(message);
+    await reply(message, interaction);
   }
 };
 

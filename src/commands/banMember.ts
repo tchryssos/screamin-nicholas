@@ -8,6 +8,7 @@ import {
   MENTIONEE_ISNT_MEMBER_ERROR,
 } from '../constants/messages.js';
 import { currentQueueRef } from '../state/queue.js';
+import { reply } from './utils/reply.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
 export const banMember = async (interaction: CommandInteraction) => {
@@ -18,24 +19,25 @@ export const banMember = async (interaction: CommandInteraction) => {
     throw new Error(DISCORD_INFO_FETCH_ERROR);
   }
   if (!(mentionee instanceof GuildMember)) {
-    return await interaction.reply(MENTIONEE_ISNT_MEMBER_ERROR);
+    return await reply(MENTIONEE_ISNT_MEMBER_ERROR, interaction);
   }
   const {
     user: { id, username },
   } = mentionee as GuildMember;
 
   if (id === interaction.user.id) {
-    return await interaction.reply(MENTIONEE_IS_SELF);
+    return await reply(MENTIONEE_IS_SELF, interaction);
   }
 
   if (currentQueueRef.banlist.includes(id)) {
-    return await interaction.reply(
-      createBannedMessage(username, 'alreadyBanned')
+    return await reply(
+      createBannedMessage(username, 'alreadyBanned'),
+      interaction
     );
   }
 
   currentQueueRef.banlist.push(id);
-  return await interaction.reply(createBannedMessage(username, 'ban'));
+  return await reply(createBannedMessage(username, 'ban'), interaction);
 };
 
 export const banMemberResponder = (interaction: CommandInteraction) =>
