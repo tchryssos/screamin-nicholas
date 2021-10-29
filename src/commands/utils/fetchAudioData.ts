@@ -152,7 +152,9 @@ export const tryFetchStream = async (
   searchText: string,
   interaction: CommandInteraction
 ) => {
-  await interaction.deferReply();
+  if (!interaction.deferred) {
+    await interaction.deferReply();
+  }
   let stream: ReturnType<typeof ytdl>;
   let url: string;
   let meta: VideoMeta | undefined;
@@ -170,7 +172,12 @@ export const tryFetchStream = async (
       if (spotifyMetaArrayOrObj.length > 1) {
         const queue = spotifyMetaArrayOrObj.slice(1);
         currentQueueRef.queue = queue;
-        reply(createAddedSongCountToQueueMessage(queue.length), interaction);
+        reply(
+          `${createAddedSongCountToQueueMessage(
+            queue.length
+          )}. Loading first track...`,
+          interaction
+        );
       }
       primaryMeta = spotifyMetaArrayOrObj[0];
     } else {

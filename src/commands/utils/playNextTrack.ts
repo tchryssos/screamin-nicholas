@@ -13,6 +13,9 @@ export const playNextTrack = async (
   const nextMeta = currentQueueRef.queue.shift()!;
   let stream: YTDLStream;
   if (nextMeta.needsSearch) {
+    if (!interaction.deferred) {
+      await interaction.deferReply();
+    }
     const { stream: fetchedStream } = await tryFetchStream(
       `${nextMeta.title} by ${nextMeta.author}`,
       interaction
