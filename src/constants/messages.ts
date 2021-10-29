@@ -77,7 +77,7 @@ export const createNowPlayingMessage = (title: string) =>
   `Now playing: ${title}`;
 
 export const createAddedSongCountToQueueMessage = (count: number) =>
-  `Added ${count} songs to the queue`;
+  `Added ${count} song${count > 1 ? 's' : ''} to the queue`;
 export const createAddedSongToQueueMessage = (
   title: string,
   queuePosition: number

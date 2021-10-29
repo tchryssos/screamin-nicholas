@@ -58,7 +58,7 @@ const buildSpotifyVideoMeta = (
   };
 };
 
-const fetchSpotifyMeta = async (spotifyUrl: string) => {
+export const fetchSpotifyMeta = async (spotifyUrl: string) => {
   if (checkIfSpotifyOkay()) {
     const urlChunks = spotifyUrl.split('/');
     const playlistIndex = urlChunks.indexOf('playlist');
