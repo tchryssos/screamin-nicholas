@@ -25,15 +25,14 @@ const fetchAndPlay = async (
   meta: VideoMeta,
   interaction: CommandInteraction,
   channelId: string,
-  guild: Guild,
-  hasAlreadyReplied: boolean
+  guild: Guild
 ) => {
   const stream = await fetchStream(meta.url);
   currentQueueRef.current = {
     meta,
     stream,
   };
-  playAudio(interaction, stream, channelId, guild, hasAlreadyReplied);
+  playAudio(interaction, stream, channelId, guild);
 };
 
 export const queuePlayer = async (
@@ -47,7 +46,7 @@ export const queuePlayer = async (
     if (!query || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);
     }
-    interaction.deferReply();
+    // interaction.deferReply();
     const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(query);
     if (isPlaylist) {
       await queuePlaylist(query, interaction, async (metaArray) => {
@@ -56,8 +55,7 @@ export const queuePlayer = async (
             metaArray![0],
             interaction,
             voiceChannel.id,
-            guild,
-            true
+            guild
           );
         }
       });
@@ -69,10 +67,10 @@ export const queuePlayer = async (
         meta = await fetchYoutubeSearchTopResultMeta(query);
       }
       if (isEmpty(currentQueueRef.current)) {
-        await fetchAndPlay(meta, interaction, voiceChannel.id, guild, false);
+        await fetchAndPlay(meta, interaction, voiceChannel.id, guild);
       } else {
         currentQueueRef.queue.push(meta);
-        interaction.editReply(
+        await interaction.reply(
           createAddedSongToQueueMessage(
             meta.title,
             currentQueueRef.queue.length
@@ -82,7 +80,7 @@ export const queuePlayer = async (
     }
   } catch (e) {
     const { message } = e as Error;
-    interaction.editReply(message);
+    await interaction.reply(message);
   }
 };
 

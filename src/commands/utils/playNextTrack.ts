@@ -7,20 +7,16 @@ import { playAudio } from './playAudio.js';
 export const playNextTrack = async (
   interaction: CommandInteraction,
   voiceChannelId: string,
-  guild: Guild,
-  alreadyRepliedToInteraction = true
+  guild: Guild
 ) => {
+  // if (!interaction.replied) {
+  //   interaction.deferReply();
+  // }
   const nextMeta = currentQueueRef.queue.shift()!;
   const stream = await fetchStream(nextMeta.url);
   currentQueueRef.current = {
     meta: nextMeta,
     stream,
   };
-  playAudio(
-    interaction,
-    stream,
-    voiceChannelId,
-    guild,
-    alreadyRepliedToInteraction
-  );
+  playAudio(interaction, stream, voiceChannelId, guild);
 };

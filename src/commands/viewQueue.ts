@@ -4,8 +4,8 @@ import { createViewQueueMessage } from '../constants/messages.js';
 import { currentQueueRef } from '../state/queue.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
-const viewQueue = (interaction: CommandInteraction) =>
-  interaction.reply(createViewQueueMessage(currentQueueRef.queue));
+const viewQueue = async (interaction: CommandInteraction) =>
+  await interaction.reply(createViewQueueMessage(currentQueueRef.queue));
 
 export const viewQueueResponder = (interaction: CommandInteraction) => {
   validationsWrapper(

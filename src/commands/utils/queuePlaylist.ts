@@ -14,6 +14,7 @@ export const queuePlaylist = async (
   interaction: CommandInteraction,
   callback?: (items?: VideoMeta[]) => void
 ) => {
+  // interaction.deferReply();
   const { items } = await ytpl(url);
   if (items && items.length) {
     const itemsMeta: VideoMeta[] = items.map((i) => ({
@@ -23,9 +24,11 @@ export const queuePlaylist = async (
       url: i.url,
     }));
     currentQueueRef.queue = [...currentQueueRef.queue, ...itemsMeta];
-    interaction.reply(createAddedSongCountToQueueMessage(itemsMeta.length));
+    await interaction.reply(
+      createAddedSongCountToQueueMessage(itemsMeta.length)
+    );
     callback?.(itemsMeta);
   } else {
-    interaction.reply(INVALID_PLAYLIST_ERROR);
+    await interaction.reply(INVALID_PLAYLIST_ERROR);
   }
 };

@@ -17,7 +17,7 @@ import { currentQueueRef } from '../../state/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData, ValidationObj } from '../../typings/validations';
 
-export const validationsWrapper = (
+export const validationsWrapper = async (
   interaction: CommandInteraction,
   validationObj: ValidationObj,
   callback: (
@@ -39,13 +39,13 @@ export const validationsWrapper = (
 
   if (isAllowedToInteract?.validate) {
     if (currentQueueRef.banlist.includes(interaction.user.id)) {
-      return interaction.reply(CAN_INTERACT_VALIDATION_ERROR);
+      return await interaction.reply(CAN_INTERACT_VALIDATION_ERROR);
     }
   }
 
   if (shouldBeInServer?.validate) {
     if (!guildId) {
-      return interaction.reply(SERVER_VALIDATION_ERROR);
+      return await interaction.reply(SERVER_VALIDATION_ERROR);
     }
 
     guild = client.guilds.cache.get(guildId)!;
@@ -53,14 +53,14 @@ export const validationsWrapper = (
 
     voiceChannel = member!.voice.channel;
     if (!voiceChannel && shouldBeInVoice?.validate) {
-      return interaction.reply(
+      return await interaction.reply(
         shouldBeInVoice.customError || VOICE_CHANNEL_VALIDATION_ERROR
       );
     }
   }
 
   if (isEmpty(currentQueueRef.current) && shouldBePlaying?.validate) {
-    return interaction.reply(
+    return await interaction.reply(
       shouldBePlaying.customError || SHOULD_BE_PLAYING_VALIDATION_ERROR
     );
   }
@@ -68,7 +68,7 @@ export const validationsWrapper = (
   const queueLength = currentQueueRef.queue.length;
 
   if (!queueLength && shouldHaveQueue?.validate) {
-    return interaction.reply(
+    return await interaction.reply(
       shouldHaveQueue.customError || QUEUE_VALIDATION_ERROR
     );
   }

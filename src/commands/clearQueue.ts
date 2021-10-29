@@ -4,9 +4,9 @@ import { CLEAR_QUEUE_MESSAGE } from '../constants/messages.js';
 import { currentQueueRef } from '../state/queue.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
-const clearQueue = (interaction: CommandInteraction) => {
+const clearQueue = async (interaction: CommandInteraction) => {
   currentQueueRef.queue = [];
-  interaction.reply(CLEAR_QUEUE_MESSAGE);
+  await interaction.reply(CLEAR_QUEUE_MESSAGE);
 };
 
 export const clearQueueResponder = (interaction: CommandInteraction) =>

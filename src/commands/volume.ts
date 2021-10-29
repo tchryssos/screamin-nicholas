@@ -9,20 +9,22 @@ import {
 import { currentQueueRef } from '../state/queue.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
-const volume = (interaction: CommandInteraction) => {
+const volume = async (interaction: CommandInteraction) => {
   const audioResource = currentQueueRef.current.resource;
   if (!audioResource || !audioResource.volume) {
     throw new Error(NO_AUDIO_RESOURCE_ERROR);
   }
   const volumePerc = interaction.options.getInteger(VOLUME_OPTION);
   if (!volumePerc) {
-    return interaction.reply(
+    return await interaction.reply(
       createGetVolumeMessage(audioResource.volume.volume)
     );
   }
 
   audioResource.volume?.setVolume(volumePerc / 100);
-  return interaction.reply(createSetVolumeMessage(audioResource.volume.volume));
+  return await interaction.reply(
+    createSetVolumeMessage(audioResource.volume.volume)
+  );
 };
 
 export const volumeResponder = (interaction: CommandInteraction) =>

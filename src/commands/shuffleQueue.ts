@@ -8,9 +8,9 @@ import {
 import { currentQueueRef } from '../state/queue.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
-const shuffleQueue = (interaction: CommandInteraction) => {
+const shuffleQueue = async (interaction: CommandInteraction) => {
   currentQueueRef.queue = shuffle(currentQueueRef.queue);
-  return interaction.reply(
+  return await interaction.reply(
     `${SHUFFLE_QUEUE_MESSAGE}\n${createViewQueueMessage(currentQueueRef.queue)}`
   );
 };

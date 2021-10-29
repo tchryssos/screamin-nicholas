@@ -10,7 +10,7 @@ import {
 import { currentQueueRef } from '../state/queue.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 
-export const banMember = (interaction: CommandInteraction) => {
+export const banMember = async (interaction: CommandInteraction) => {
   // For some reason, using object destructuring here seems to lose
   // track of what the interaction is, and I get cannot read ____ of undefined errors
   const mentionee = interaction.options.getMentionable(MEMBER_OPTION);
@@ -18,22 +18,24 @@ export const banMember = (interaction: CommandInteraction) => {
     throw new Error(DISCORD_INFO_FETCH_ERROR);
   }
   if (!(mentionee instanceof GuildMember)) {
-    return interaction.reply(MENTIONEE_ISNT_MEMBER_ERROR);
+    return await interaction.reply(MENTIONEE_ISNT_MEMBER_ERROR);
   }
   const {
     user: { id, username },
   } = mentionee as GuildMember;
 
   if (id === interaction.user.id) {
-    return interaction.reply(MENTIONEE_IS_SELF);
+    return await interaction.reply(MENTIONEE_IS_SELF);
   }
 
   if (currentQueueRef.banlist.includes(id)) {
-    return interaction.reply(createBannedMessage(username, 'alreadyBanned'));
+    return await interaction.reply(
+      createBannedMessage(username, 'alreadyBanned')
+    );
   }
 
   currentQueueRef.banlist.push(id);
-  return interaction.reply(createBannedMessage(username, 'ban'));
+  return await interaction.reply(createBannedMessage(username, 'ban'));
 };
 
 export const banMemberResponder = (interaction: CommandInteraction) =>

@@ -27,7 +27,7 @@ export const startPlayer = async (
     if (isPlaylist) {
       currentQueueRef.queue = [];
       await queuePlaylist(url, interaction, async () =>
-        playNextTrack(interaction, voiceChannel.id, guild, true)
+        playNextTrack(interaction, voiceChannel.id, guild)
       );
     } else {
       const {
@@ -48,7 +48,7 @@ export const startPlayer = async (
     }
   } catch (e) {
     const { message } = e as Error;
-    interaction.editReply(message);
+    await interaction.reply(message);
   }
 };
 

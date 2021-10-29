@@ -64,7 +64,7 @@ export const tryFetchStream = async (
   searchText: string,
   interaction: CommandInteraction
 ) => {
-  await interaction.deferReply();
+  // await interaction.deferReply();
   let stream: ReturnType<typeof ytdl>;
   let url: string;
   let meta: VideoMeta | undefined;

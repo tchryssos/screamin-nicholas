@@ -2,6 +2,7 @@ import {
   AudioPlayerStatus,
   createAudioPlayer,
   createAudioResource,
+  DiscordGatewayAdapterCreator,
   joinVoiceChannel,
   StreamType,
 } from '@discordjs/voice';
@@ -13,12 +14,11 @@ import { currentQueueRef } from '../../state/queue.js';
 import { YTDLStream } from '../../typings/queue';
 import { playNextTrack } from './playNextTrack.js';
 
-export const playAudio = (
+export const playAudio = async (
   interaction: CommandInteraction,
   stream: YTDLStream,
   voiceChannelId: string,
-  guild: Guild,
-  alreadyRepliedToInteraction?: boolean
+  guild: Guild
 ) => {
   const initialPlayer = currentQueueRef.player;
   let player = initialPlayer;
@@ -38,7 +38,7 @@ export const playAudio = (
   const connection = joinVoiceChannel({
     channelId: voiceChannelId,
     guildId: guild.id,
-    adapterCreator: guild!.voiceAdapterCreator,
+    adapterCreator: guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,
   });
 
   // Play the audio, and related things
@@ -53,10 +53,10 @@ export const playAudio = (
   const nowPlayingMessage = createNowPlayingMessage(
     currentQueueRef.current.meta?.title || ''
   );
-  if (alreadyRepliedToInteraction) {
+  if (interaction.replied) {
     interaction.channel?.send(nowPlayingMessage);
   } else {
-    interaction.editReply(nowPlayingMessage);
+    await interaction.reply(nowPlayingMessage);
   }
 
   if (!initialPlayer) {

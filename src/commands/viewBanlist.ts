@@ -23,7 +23,7 @@ const viewBanlist = async (
   }
 
   if (!banlist.length) {
-    return interaction.reply(NO_BANLIST_ERROR);
+    return await interaction.reply(NO_BANLIST_ERROR);
   }
 
   try {
@@ -32,9 +32,9 @@ const viewBanlist = async (
       (string, curMember) => `${string}\n${curMember.user.username}`,
       ''
     );
-    return interaction.reply(createBanlistMessage(membersString));
+    return await interaction.reply(createBanlistMessage(membersString));
   } catch {
-    return interaction.reply(BANLIST_FETCH_ERROR);
+    return await interaction.reply(BANLIST_FETCH_ERROR);
   }
 };
 

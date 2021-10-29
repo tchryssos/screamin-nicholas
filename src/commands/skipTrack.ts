@@ -10,7 +10,7 @@ export const skipTrack = (
   interactionData: InteractionData
 ) => {
   const { voiceChannel, guild } = interactionData;
-  playNextTrack(interaction, voiceChannel!.id, guild!, false);
+  playNextTrack(interaction, voiceChannel!.id, guild!);
 };
 
 export const skipTrackResponder = (interaction: CommandInteraction) =>
