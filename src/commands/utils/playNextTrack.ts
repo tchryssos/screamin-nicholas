@@ -1,7 +1,7 @@
 import { CommandInteraction, Guild } from 'discord.js';
 
 import { currentQueueRef } from '../../state/queue.js';
-import { fetchStream } from './fetchAudio.js';
+import { fetchStream } from './fetchAudioData.js';
 import { playAudio } from './playAudio.js';
 
 export const playNextTrack = async (

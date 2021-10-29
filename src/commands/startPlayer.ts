@@ -5,7 +5,7 @@ import { DISCORD_INFO_FETCH_ERROR } from '../constants/messages.js';
 import { YOUTUBE_PLAYLIST_REGEX } from '../constants/regex.js';
 import { currentQueueRef } from '../state/queue.js';
 import { InteractionData } from '../typings/validations.js';
-import { fetchYoutubeMeta, tryFetchStream } from './utils/fetchAudio.js';
+import { fetchYoutubeMeta, tryFetchStream } from './utils/fetchAudioData.js';
 import { playAudio } from './utils/playAudio.js';
 import { playNextTrack } from './utils/playNextTrack.js';
 import { queuePlaylist } from './utils/queuePlaylist.js';

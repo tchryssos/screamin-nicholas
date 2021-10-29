@@ -1,5 +1,6 @@
 import { CommandInteraction, Guild } from 'discord.js';
 import isEmpty from 'lodash.isempty';
+import ytdl from 'ytdl-core';
 
 import { QUERY_OPTION } from '../constants/commands.js';
 import {
@@ -11,7 +12,11 @@ import { currentQueueRef } from '../state/queue.js';
 import { VideoMeta } from '../typings/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData } from '../typings/validations';
-import { fetchStream, fetchYoutubeMeta } from './utils/fetchAudio.js';
+import {
+  fetchStream,
+  fetchYoutubeMeta,
+  fetchYoutubeSearchTopResultMeta,
+} from './utils/fetchAudioData.js';
 import { playAudio } from './utils/playAudio.js';
 import { queuePlaylist } from './utils/queuePlaylist.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
@@ -37,14 +42,15 @@ export const queuePlayer = async (
 ) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { voiceChannel, guild } = interactionData;
-  const url = interaction.options.getString(QUERY_OPTION);
+  const query = interaction.options.getString(QUERY_OPTION);
   try {
-    if (!url || !voiceChannel || !guild) {
+    if (!query || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);
     }
-    const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(url);
+    interaction.deferReply();
+    const isPlaylist = YOUTUBE_PLAYLIST_REGEX.test(query);
     if (isPlaylist) {
-      await queuePlaylist(url, interaction, async (metaArray) => {
+      await queuePlaylist(query, interaction, async (metaArray) => {
         if (isEmpty(currentQueueRef.current)) {
           await fetchAndPlay(
             metaArray![0],
@@ -56,12 +62,17 @@ export const queuePlayer = async (
         }
       });
     } else {
-      const meta = await fetchYoutubeMeta(url);
+      let meta: VideoMeta;
+      if (ytdl.validateURL(query)) {
+        meta = await fetchYoutubeMeta(query);
+      } else {
+        meta = await fetchYoutubeSearchTopResultMeta(query);
+      }
       if (isEmpty(currentQueueRef.current)) {
         await fetchAndPlay(meta, interaction, voiceChannel.id, guild, false);
       } else {
         currentQueueRef.queue.push(meta);
-        interaction.reply(
+        interaction.editReply(
           createAddedSongToQueueMessage(
             meta.title,
             currentQueueRef.queue.length
@@ -71,7 +82,7 @@ export const queuePlayer = async (
     }
   } catch (e) {
     const { message } = e as Error;
-    interaction.reply(message);
+    interaction.editReply(message);
   }
 };
 

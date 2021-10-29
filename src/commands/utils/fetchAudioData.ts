@@ -3,7 +3,7 @@ import ytdl from 'ytdl-core';
 import ytsr, { Video } from 'ytsr';
 
 // eslint-disable-next-line import/extensions
-import { VideoMeta } from '../../typings/queue';
+import { VideoMeta, YTDLStream } from '../../typings/queue';
 import { durationToSeconds } from '../../utils/durationToSeconds.js';
 
 export const fetchStream = async (youtubeUrl: string) =>
@@ -29,7 +29,9 @@ export const fetchYoutubeMeta = async (
   return { title, author: name, lengthSeconds, url: youtubeUrl };
 };
 
-export const fetchYoutubeTopResultStream = async (searchText: string) => {
+export const fetchYoutubeSearchTopResultMeta = async (
+  searchText: string
+): Promise<VideoMeta> => {
   const searchResults = await ytsr(searchText);
   if (searchResults.results) {
     const firstResult = searchResults.items.find(
@@ -37,17 +39,25 @@ export const fetchYoutubeTopResultStream = async (searchText: string) => {
     );
     if (firstResult) {
       const { url, title, author, duration } = firstResult as Video;
-      const stream = await fetchStream(url);
       const meta: VideoMeta = {
         title,
         url,
         author: author?.name || 'Unknown',
         lengthSeconds: durationToSeconds(duration),
       };
-      return { url, stream, meta };
+      return meta;
     }
   }
   throw new Error(`No results found for ${searchText}`);
+};
+
+export const fetchYoutubeTopResultStream = async (
+  searchText: string
+): Promise<{ stream: YTDLStream; meta: VideoMeta }> => {
+  const meta = await fetchYoutubeSearchTopResultMeta(searchText);
+  // We can be sure that meta exists because if it doesn't the above fn will throw
+  const stream = await fetchStream(meta!.url);
+  return { stream, meta: meta! };
 };
 
 export const tryFetchStream = async (
@@ -63,12 +73,9 @@ export const tryFetchStream = async (
     url = searchText;
     meta = undefined;
   } else {
-    const {
-      url: searchedUrl,
-      stream: searchedStream,
-      meta: searchedMeta,
-    } = await fetchYoutubeTopResultStream(searchText);
-    url = searchedUrl;
+    const { stream: searchedStream, meta: searchedMeta } =
+      await fetchYoutubeTopResultStream(searchText);
+    url = searchedMeta.url;
     stream = searchedStream;
     meta = searchedMeta;
   }

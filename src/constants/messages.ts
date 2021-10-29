@@ -99,11 +99,13 @@ export const createViewQueueMessage = (queue: VideoMeta[]) => {
       )}${currentMeta.title}`;
     }, '');
 
+  const oneSongInQueue = queue.length === 1;
+
   return `Here are the ${
     queue.length > queueDisplayLimit ? `next ${queueDisplayLimit} ` : ''
-  }tracks in the queue:\n${trackList}\n\nThere are ${
-    queue.length
-  } songs in the queue.`;
+  }tracks in the queue:\n${trackList}\n\nThere ${
+    oneSongInQueue ? 'is' : 'are'
+  } ${queue.length} song${oneSongInQueue ? '' : 's'} in the queue.`;
 };
 
 export const createBannedMessage = (
