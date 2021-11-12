@@ -14,5 +14,6 @@ Screamin' Nicholas uses Node 16 and typescript. You can use `npm run dev` to spi
 
 ### TODOs
 
-- Search by Spotify url
+- Search by Spotify album, refresh Spotify key when expired
+- Investigate crash after x amount of time
 - Add /gamble command (maybe once title search works) that will search Youtube and pull something "random"
