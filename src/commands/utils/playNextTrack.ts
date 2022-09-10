@@ -2,8 +2,9 @@ import { CommandInteraction, Guild } from 'discord.js';
 
 import { currentQueueRef } from '../../state/queue.js';
 import { YTDLStream } from '../../typings/queue.js';
-import { fetchStream, tryFetchStream } from './fetchAudioData.js';
+import { tryFetchStream } from './fetchAudioData.js';
 import { playAudio } from './playAudio.js';
+import { fetchStream } from './youtube/fetch.js';
 
 export const playNextTrack = async (
   interaction: CommandInteraction,

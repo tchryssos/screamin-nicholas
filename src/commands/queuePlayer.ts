@@ -17,17 +17,17 @@ import { currentQueueRef } from '../state/queue.js';
 import { VideoMeta } from '../typings/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData } from '../typings/validations';
-import {
-  fetchSpotifyMeta,
-  fetchStream,
-  fetchYoutubeMeta,
-  fetchYoutubeSearchTopResultMeta,
-} from './utils/fetchAudioData.js';
 import { playAudio } from './utils/playAudio.js';
 import { playNextTrack } from './utils/playNextTrack.js';
 import { queuePlaylist } from './utils/queuePlaylist.js';
 import { reply } from './utils/reply.js';
+import { fetchSpotifyMeta } from './utils/spotify/fetch.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
+import {
+  fetchStream,
+  fetchYoutubeMeta,
+  fetchYoutubeSearchTopResultMeta,
+} from './utils/youtube/fetch.js';
 
 const fetchAndPlay = async (
   meta: VideoMeta,
