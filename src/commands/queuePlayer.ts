@@ -18,7 +18,7 @@ import { VideoMeta } from '../typings/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData } from '../typings/validations';
 import {
-  // fetchSpotifyMeta,
+  fetchSpotifyMeta,
   fetchStream,
   fetchYoutubeMeta,
   fetchYoutubeSearchTopResultMeta,
@@ -68,30 +68,30 @@ export const queuePlayer = async (
           );
         }
       });
-      // } else if (query.includes('spotify')) {
-      //   if (!interaction.deferred) {
-      //     await interaction.deferReply();
-      //   }
-      //   const spotifyMetaArrayOrObj = await fetchSpotifyMeta(query);
-      //   let queueLength = 1;
-      //   if (Array.isArray(spotifyMetaArrayOrObj)) {
-      //     currentQueueRef.queue = [
-      //       ...currentQueueRef.queue,
-      //       ...spotifyMetaArrayOrObj,
-      //     ];
-      //     queueLength = spotifyMetaArrayOrObj.length;
-      //   } else {
-      //     currentQueueRef.queue.push(spotifyMetaArrayOrObj);
-      //   }
-      //   reply(createAddedSongCountToQueueMessage(queueLength), interaction);
-      //   if (isEmpty(currentQueueRef.current)) {
-      //     reply('Now loading first track...', interaction);
-      //     playNextTrack(
-      //       interaction,
-      //       interactionData.voiceChannel!.id,
-      //       interactionData.guild!
-      //     );
-      //   }
+    } else if (query.includes('spotify')) {
+      if (!interaction.deferred) {
+        await interaction.deferReply();
+      }
+      const spotifyMetaArrayOrObj = await fetchSpotifyMeta(query);
+      let queueLength = 1;
+      if (Array.isArray(spotifyMetaArrayOrObj)) {
+        currentQueueRef.queue = [
+          ...currentQueueRef.queue,
+          ...spotifyMetaArrayOrObj,
+        ];
+        queueLength = spotifyMetaArrayOrObj.length;
+      } else {
+        currentQueueRef.queue.push(spotifyMetaArrayOrObj);
+      }
+      reply(createAddedSongCountToQueueMessage(queueLength), interaction);
+      if (isEmpty(currentQueueRef.current)) {
+        reply('Now loading first track...', interaction);
+        playNextTrack(
+          interaction,
+          interactionData.voiceChannel!.id,
+          interactionData.guild!
+        );
+      }
     } else {
       let meta: VideoMeta;
       interaction.deferReply();
