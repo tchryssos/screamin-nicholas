@@ -1,4 +1,7 @@
-import { CommandInteraction } from 'discord.js';
+import {
+  CommandInteraction,
+  CommandInteractionOptionResolver,
+} from 'discord.js';
 
 import { QUERY_OPTION } from '../constants/commands.js';
 import { DISCORD_INFO_FETCH_ERROR } from '../constants/messages.js';
@@ -18,7 +21,9 @@ export const startPlayer = async (
   interactionData: InteractionData
 ) => {
   const { voiceChannel, guild } = interactionData;
-  const url = interaction.options.getString(QUERY_OPTION);
+  const url = (
+    interaction.options as CommandInteractionOptionResolver
+  ).getString(QUERY_OPTION);
   try {
     if (!url || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);

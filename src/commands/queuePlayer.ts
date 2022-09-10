@@ -1,4 +1,8 @@
-import { CommandInteraction, Guild } from 'discord.js';
+import {
+  CommandInteraction,
+  CommandInteractionOptionResolver,
+  Guild,
+} from 'discord.js';
 import isEmpty from 'lodash.isempty';
 import ytdl from 'ytdl-core';
 
@@ -45,7 +49,9 @@ export const queuePlayer = async (
 ) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { voiceChannel, guild } = interactionData;
-  const query = interaction.options.getString(QUERY_OPTION);
+  const query = (
+    interaction.options as CommandInteractionOptionResolver
+  ).getString(QUERY_OPTION);
   try {
     if (!query || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);
