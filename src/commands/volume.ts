@@ -1,4 +1,7 @@
-import { CommandInteraction } from 'discord.js';
+import {
+  CommandInteraction,
+  CommandInteractionOptionResolver,
+} from 'discord.js';
 
 import { VOLUME_OPTION } from '../constants/commands.js';
 import {
@@ -15,7 +18,9 @@ const volume = async (interaction: CommandInteraction) => {
   if (!audioResource || !audioResource.volume) {
     throw new Error(NO_AUDIO_RESOURCE_ERROR);
   }
-  const volumePerc = interaction.options.getInteger(VOLUME_OPTION);
+  const volumePerc = (
+    interaction.options as CommandInteractionOptionResolver
+  ).getInteger(VOLUME_OPTION);
   if (!volumePerc) {
     return await reply(
       createGetVolumeMessage(audioResource.volume.volume),

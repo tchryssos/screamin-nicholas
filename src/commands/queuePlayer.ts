@@ -1,4 +1,8 @@
-import { CommandInteraction, Guild } from 'discord.js';
+import {
+  CommandInteraction,
+  CommandInteractionOptionResolver,
+  Guild,
+} from 'discord.js';
 import isEmpty from 'lodash.isempty';
 import ytdl from 'ytdl-core';
 
@@ -13,17 +17,17 @@ import { currentQueueRef } from '../state/queue.js';
 import { VideoMeta } from '../typings/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData } from '../typings/validations';
-import {
-  fetchSpotifyMeta,
-  fetchStream,
-  fetchYoutubeMeta,
-  fetchYoutubeSearchTopResultMeta,
-} from './utils/fetchAudioData.js';
 import { playAudio } from './utils/playAudio.js';
 import { playNextTrack } from './utils/playNextTrack.js';
 import { queuePlaylist } from './utils/queuePlaylist.js';
 import { reply } from './utils/reply.js';
+import { fetchSpotifyMeta } from './utils/spotify/fetch.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
+import {
+  fetchStream,
+  fetchYoutubeMeta,
+  fetchYoutubeSearchTopResultMeta,
+} from './utils/youtube/fetch.js';
 
 const fetchAndPlay = async (
   meta: VideoMeta,
@@ -45,7 +49,9 @@ export const queuePlayer = async (
 ) => {
   // Run a bunch of checks to make sure that the command can be run successfully...
   const { voiceChannel, guild } = interactionData;
-  const query = interaction.options.getString(QUERY_OPTION);
+  const query = (
+    interaction.options as CommandInteractionOptionResolver
+  ).getString(QUERY_OPTION);
   try {
     if (!query || !voiceChannel || !guild) {
       throw new Error(DISCORD_INFO_FETCH_ERROR);
