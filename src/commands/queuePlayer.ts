@@ -8,7 +8,6 @@ import ytdl from 'ytdl-core';
 
 import { QUERY_OPTION } from '../constants/commands.js';
 import {
-  createAddedSongCountToQueueMessage,
   createAddedSongToQueueMessage,
   DISCORD_INFO_FETCH_ERROR,
 } from '../constants/messages.js';
@@ -18,10 +17,8 @@ import { VideoMeta } from '../typings/queue.js';
 // eslint-disable-next-line import/extensions
 import { InteractionData } from '../typings/validations';
 import { playAudio } from './utils/playAudio.js';
-import { playNextTrack } from './utils/playNextTrack.js';
 import { queuePlaylist } from './utils/queuePlaylist.js';
 import { reply } from './utils/reply.js';
-import { fetchSpotifyMeta } from './utils/spotify/fetch.js';
 import { validationsWrapper } from './utils/validationsWrapper.js';
 import {
   fetchStream,
@@ -68,30 +65,6 @@ export const queuePlayer = async (
           );
         }
       });
-    } else if (query.includes('spotify')) {
-      if (!interaction.deferred) {
-        await interaction.deferReply();
-      }
-      const spotifyMetaArrayOrObj = await fetchSpotifyMeta(query);
-      let queueLength = 1;
-      if (Array.isArray(spotifyMetaArrayOrObj)) {
-        currentQueueRef.queue = [
-          ...currentQueueRef.queue,
-          ...spotifyMetaArrayOrObj,
-        ];
-        queueLength = spotifyMetaArrayOrObj.length;
-      } else {
-        currentQueueRef.queue.push(spotifyMetaArrayOrObj);
-      }
-      reply(createAddedSongCountToQueueMessage(queueLength), interaction);
-      if (isEmpty(currentQueueRef.current)) {
-        reply('Now loading first track...', interaction);
-        playNextTrack(
-          interaction,
-          interactionData.voiceChannel!.id,
-          interactionData.guild!
-        );
-      }
     } else {
       let meta: VideoMeta;
       interaction.deferReply();
